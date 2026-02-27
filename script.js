@@ -1,4 +1,4 @@
-// Game state management
+// Game state
 let currentScreen = 'loading';
 let tetrisGame = null;
 let gameScore = 0;
@@ -9,32 +9,74 @@ let isTyping = false;
 let currentPhotoIndex = 0;
 let currentSongIndex = 0;
 let isPlaying = false;
-let audioContext = null;
+let gameOverTimer = null;
 
-// Message content
-const fullMessage = `Hi,
+// Message
+const fullMessage = `Hi, Miyu — or as I often call you, Mango.
 
-Happy Birthday!
+I suddenly realized: we've come this far together, and I don't think I've ever thanked you properly.
 
-Today I want you to experience all the positive things and magic that can only happen when you're in this world. I hope all your wishes come true, especially the funny and unusual ones, because you're so unique! I always believe that you can get through every challenge with your incredible strength and spirit.
+Thank you for being such a... weird TWIN.
+In the most positive way possible.
 
-Thank you for being the most precious part of my life. You truly make my days more meaningful and colorful. I hope in this new year, you become happier, more successful, and of course more beautiful (even though you're already so beautiful!).
+You're so kind. Sometimes I think, "How can Mango be this patient with me?"
+Patient — even though I know I sometimes annoy you with the same old antics.
 
-I love you so much! 💕`;
+You're also loud. Super loud.
+When we hang out, there's never a dull moment. Your voice is like the most comforting background noise in my life.
+Chatty, talkative, love to nag. But somehow, when I don't hear your voice, something feels missing.
 
-// Photo data
+Caring. So much.
+Down to the little things others don't notice.
+You always know when to send a message, when to show up, when to just sit beside me in silence.
+
+Attentive. Sometimes it makes me think, "Wow, Mango really looks out for me."
+You're beautiful — that's a fact.
+But what makes you different isn't just your looks, but the way you see the world: always finding room to laugh, even in the hardest times.
+
+Funny, humorous, love to joke.
+You're the type of person who can make people mad, but also make them forget why they were angry.
+Because beneath all your randomness, there's a heart that's incredibly sincere.
+
+You don't dwell on things — that's what I admire most.
+You're the type who says, "Problem? Okay, next." Not because you don't feel, but because you choose not to drown. And that's really cool.
+
+Most importantly: you always make my day colorful.
+Even on the grayest days, you show up — through chats, through stories, through your random antics — and everything becomes a little brighter.
+
+Thank you for being a place to come home to, a place to share stories, a place to laugh, a place to cry, and a place to just be myself without fear of judgment.
+
+Thank you for choosing to be my TWIN, out of thousands of people.
+
+I love you, Mango — as a TWIN.
+Never change.
+Keep being you — annoying, loud, funny, caring, and always making life a little less quiet.
+
+— From someone who's always proud of you,  
+ItsZio & Uncle Vic 💕`;
+
+// Photos WITH IMAGE PATHS
 const photos = [
-    { text: 'Best Friends Forever 👯', image: './images/photo1.jpg' },
-    { text: 'Happy Birthday! 🎂', image: './images/photo2.jpg' },
-    { text: 'Crazy Together 🤪', image: './images/photo3.jpg' },
-    { text: 'Support System 💪', image: './images/photo4.jpg' },
-    { text: 'Laughter & Chaos 😂', image: './images/photo5.jpg' },
-    { text: 'Through Thick & Thin 🌈', image: './images/photo6.jpg' },
-    { text: 'Celebrating You 🎉', image: './images/photo7.jpg' },
-    { text: 'Forever Grateful 🙏', image: './images/photo8.jpg' }
+    { text: 'TWIN MEMORY TRIO 🎮', image: './images/photo1.jpg' },
+    { text: 'TWIN MEMORY TRIO 🎂', image: './images/photo2.jpg' },
+    { text: 'TWIN MEMORY TRIO 🤪', image: './images/photo3.jpg' },
+    { text: 'TWIN MEMORY TRIO 💪', image: './images/photo4.jpg' },
+    { text: 'TWIN MEMORY TRIO 😂', image: './images/photo5.jpg' },
+    { text: 'TWIN MEMORY TRIO 🌈', image: './images/photo6.jpg' },
+    { text: 'TWIN MEMORY TRIO 🎉', image: './images/photo7.jpg' },
+    { text: 'TWIN MEMORY TRIO 🙏', image: './images/photo8.jpg' }
 ];
 
-// Initialize app
+// Song titles
+const songTitles = [
+    'Happy Birthday',
+    'My Love Mine All Mine - Mitski',
+    'Line Without a Hook - Ricky Montgomery',
+    '505 - Arctic Monkeys',
+    'RUDE! - Hearts2Hearts'
+];
+
+// Initialize
 document.addEventListener('DOMContentLoaded', function() {
     initializeApp();
     setupEventListeners();
@@ -43,14 +85,6 @@ document.addEventListener('DOMContentLoaded', function() {
 function initializeApp() {
     simulateLoading();
     initializeTetris();
-    preloadImages();
-}
-
-function preloadImages() {
-    photos.forEach(photo => {
-        const img = new Image();
-        img.src = photo.image;
-    });
 }
 
 function simulateLoading() {
@@ -86,19 +120,16 @@ function simulateLoading() {
     }, 200);
 }
 
-function showScreen(screenId) {
-    // Hide all screens
+window.showScreen = function(screenId) {
     document.querySelectorAll('.screen').forEach(screen => {
         screen.classList.remove('active');
     });
     
-    // Show target screen
     const targetScreen = document.getElementById(screenId + '-screen');
     if (targetScreen) {
         targetScreen.classList.add('active');
         currentScreen = screenId;
         
-        // Initialize screen content
         if (screenId === 'message') initializeMessage();
         if (screenId === 'gallery') initializeGallery();
         if (screenId === 'music') initializeMusic();
@@ -106,22 +137,9 @@ function showScreen(screenId) {
             startTetrisGame();
         }
     }
-}
+};
 
 function setupEventListeners() {
-    // Menu buttons
-    document.querySelectorAll('[data-page]').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const page = this.dataset.page;
-            showScreen(page);
-        });
-    });
-    
-    // Start button
-    document.getElementById('start-btn')?.addEventListener('click', () => {
-        showScreen('main');
-    });
-    
     // Skip button
     document.getElementById('skip-btn')?.addEventListener('click', skipMessage);
     
@@ -211,22 +229,23 @@ function startPhotoShow() {
     photoBtn.textContent = 'PRINTING...';
     progressDiv.textContent = 'INITIALIZING CAMERA...';
     
+    // Create frames with image placeholders
     let framesHTML = '';
     for (let i = 0; i < photos.length; i++) {
         framesHTML += `
             <div class="photo-frame" id="frame-${i+1}">
-                <div class="photo-content">READY</div>
+                <div class="photo-content" style="color:#333;">READY</div>
             </div>
         `;
     }
     
     photoDisplay.innerHTML = `
-        <div class="photo-strip">
-            <div class="photo-strip-header">PHOTOSTRIP SESSION</div>
-            <div class="photo-frames-container" style="max-height:300px; overflow-y:auto;">
+        <div style="display:flex; flex-direction:column; width:100%;">
+            <div style="text-align:center; color:#9bbc0f; margin-bottom:5px; font-weight:bold;">PHOTOSTRIP SESSION</div>
+            <div style="max-height:250px; overflow-y:auto; padding:5px;">
                 ${framesHTML}
             </div>
-            <div class="photo-strip-footer">🎂 HAPPY BIRTHDAY! 🎂</div>
+            <div style="text-align:center; color:#9bbc0f; margin-top:5px; font-weight:bold;">🎂 HAPPY BIRTHDAY! 🎂</div>
         </div>
     `;
     
@@ -249,7 +268,6 @@ function startPhotoShow() {
 
 function startPhotoCapture() {
     const progressDiv = document.getElementById('photobox-progress');
-    const framesContainer = document.querySelector('.photo-frames-container');
     
     const captureInterval = setInterval(() => {
         if (currentPhotoIndex < photos.length) {
@@ -261,11 +279,35 @@ function startPhotoCapture() {
                 setTimeout(() => {
                     frame.classList.add('filled');
                     const photo = photos[currentPhotoIndex];
-                    frame.innerHTML = `
-                        <div class="photo-content" style="color:white; text-align:center; padding:10px;">
-                            ${photo.text}
-                        </div>
-                    `;
+                    
+                    // Create image element
+                    const img = document.createElement('img');
+                    img.src = photo.image;
+                    img.alt = photo.text;
+                    img.style.width = '100%';
+                    img.style.height = '100%';
+                    img.style.objectFit = 'cover';
+                    
+                    // Clear frame and add image
+                    frame.innerHTML = '';
+                    frame.appendChild(img);
+                    
+                    // Add text overlay
+                    const overlay = document.createElement('div');
+                    overlay.style.position = 'absolute';
+                    overlay.style.bottom = '0';
+                    overlay.style.left = '0';
+                    overlay.style.right = '0';
+                    overlay.style.background = 'rgba(0,0,0,0.7)';
+                    overlay.style.color = 'white';
+                    overlay.style.padding = '5px';
+                    overlay.style.textAlign = 'center';
+                    overlay.style.fontSize = '10px';
+                    overlay.style.fontWeight = 'bold';
+                    overlay.textContent = photo.text;
+                    
+                    frame.style.position = 'relative';
+                    frame.appendChild(overlay);
                     
                     const displayCount = currentPhotoIndex + 1;
                     progressDiv.textContent = `CAPTURED ${displayCount}/${photos.length}`;
@@ -283,7 +325,7 @@ function startPhotoCapture() {
                 document.getElementById('photo-btn').disabled = false;
             }, 2000);
         }
-    }, 2000);
+    }, 1500);
 }
 
 // Music functions
@@ -312,7 +354,6 @@ function playSong(index) {
         }
     });
     
-    // Simulate play
     isPlaying = true;
     document.getElementById('play-pause-btn').textContent = '⏸';
 }
@@ -335,26 +376,15 @@ function nextSong() {
 }
 
 function updateNowPlaying() {
-    const songTitles = [
-        'Happy Birthday To You',
-        'Best Day Ever',
-        'For You My Friend',
-        'Celebration',
-        'Forever Young'
-    ];
     document.getElementById('now-playing').textContent = `🎜 Now Playing: ${songTitles[currentSongIndex]}`;
 }
 
 // Tetris functions
 function initializeTetris() {
-    // Simple Tetris implementation
     tetrisGame = {
         board: Array(20).fill().map(() => Array(10).fill(0)),
         currentPiece: null,
-        gameRunning: false,
-        score: 0,
-        level: 1,
-        lines: 0
+        gameRunning: false
     };
 }
 
@@ -365,11 +395,17 @@ function startTetrisGame() {
     gameLines = 0;
     updateTetrisStats();
     drawTetrisBoard();
+    
+    if (gameOverTimer) clearTimeout(gameOverTimer);
+    gameOverTimer = setTimeout(() => {
+        if (tetrisGame?.gameRunning) {
+            gameOver();
+        }
+    }, 10000);
 }
 
 function moveTetrisPiece(direction) {
     if (!tetrisGame?.gameRunning) return;
-    // Simplified movement
     console.log('Moving piece:', direction);
 }
 
@@ -392,7 +428,6 @@ function drawTetrisBoard() {
     ctx.fillStyle = '#000';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     
-    // Draw grid
     ctx.strokeStyle = '#9bbc0f';
     ctx.lineWidth = 1;
     
@@ -409,30 +444,16 @@ function drawTetrisBoard() {
         ctx.lineTo(canvas.width, i * 20);
         ctx.stroke();
     }
-    
-    // Simulate game over after 10 seconds for demo
-    if (!window.gameOverTimer) {
-        window.gameOverTimer = setTimeout(() => {
-            if (tetrisGame?.gameRunning) {
-                gameOver();
-            }
-        }, 10000);
-    }
 }
 
 function gameOver() {
     tetrisGame.gameRunning = false;
-    clearTimeout(window.gameOverTimer);
-    window.gameOverTimer = null;
+    clearTimeout(gameOverTimer);
     
     document.getElementById('game-over-modal').classList.add('active');
     
-    // Show final message after game over
     document.getElementById('game-over-ok').onclick = () => {
         document.getElementById('game-over-modal').classList.remove('active');
         document.getElementById('final-message-modal').classList.add('active');
     };
-}
-
-// Make showScreen available globally
-window.showScreen = showScreen;
+    }
