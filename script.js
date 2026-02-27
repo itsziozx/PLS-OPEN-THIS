@@ -226,49 +226,12 @@ function startTypewriter() {
     const fullMessage = `Hi,
 
 Happy Birthday!
-l
-Hi, Miyu — or as I often call you, Mango.
 
-But because I suddenly realized: we've come this far together, and I don't think I've ever thanked you properly.
+Hari ini aku pengen kamu ngerasain semua hal positif dan keajaiban yang cuma bisa didapetin kalo kamu ada di dunia ini. Semoga segala keinginanmu tercapai, apalagi yang kocak-kocak dan gak biasa, karena kamu tuh unik banget! Aku selalu percaya kalau kamu bisa melewati semua tantangan dengan kekuatan dan semangat yang luar biasa.
 
-Thank you for being such a... weird friend.
-In the most positive way possible.
+Terima kasih udah jadi bagian hidup aku yang paling berharga. Kamu bener-bener bikin hari-hari aku jadi lebih berarti dan penuh warna. Semoga di tahun yang baru ini, kamu makin bahagia, makin sukses, dan tentunya makin cantik (walaupun udah cantik banget sih!).
 
-You're so kind. Sometimes I think, "How can Mango be this patient with me?"
-Patient — even though I know I sometimes annoy you with the same old antics.
-
-You're also loud. Super loud.
-When we hang out, there's never a dull moment. Your voice is like the most comforting background noise in my life.
-Chatty, talkative, love to nag. But somehow, when I don't hear your voice, something feels missing.
-
-Caring. So much.
-Down to the little things others don't notice.
-You always know when to send a message, when to show up, when to just sit beside me in silence.
-
-Attentive. Sometimes it makes me think, "Wow, Mango really looks out for me."
-You're beautiful — that's a fact.
-But what makes you different isn't just your looks, but the way you see the world: always finding room to laugh, even in the hardest times.
-
-Funny, humorous, love to joke.
-You're the type of person who can make people mad, but also make them forget why they were angry.
-Because beneath all your randomness, there's a heart that's incredibly sincere.
-
-You don't dwell on things — that's what I admire most.
-You're the type who says, "Problem? Okay, next." Not because you don't feel, but because you choose not to drown. And that's really cool.
-
-Most importantly: you always make my day colorful.
-Even on the grayest days, you show up — through chats, through stories, through your random antics — and everything becomes a little brighter.
-
-Thank you for being a place to come home to, a place to share stories, a place to laugh, a place to cry, and a place to just be myself without fear of judgment.
-
-Thank you for choosing to be my friend, out of thousands of people.
-
-I love you, Mango — as a friend.
-Never change.
-Keep being you — annoying, loud, funny, caring, and always making life a little less quiet.
-
-— From someone who's always proud of you,  
-ItsZio & Uncle Vic 💕`;
+I love you so much! 💕`;
     
     // Clear content and start fresh
     messageContent.innerHTML = '';
@@ -303,7 +266,7 @@ function skipTypewriter() {
         clearInterval(typewriterInterval);
         const messageContent = document.querySelector('.message-content');
         if (messageContent) {
-            const fullMessage = `Hi Cel,<br><br>Happy Birthday!<br><br>Today I want you to experience all the positive things and magic that can only happen when you're in this world. I hope all your wishes come true, especially the funny and unusual ones, because you're so unique! I always believe that you can get through every challenge with your incredible strength and spirit.<br><br>Thank you for being the most precious part of my life. You truly make my days more meaningful and colorful. I hope in this new year, you become happier, more successful, and of course more beautiful (even though you're already so beautiful!).<br><br>I love you so much! 💕`;
+            const fullMessage = `Hi Cel,<br><br>Happy Birthday!<br><br>Hari ini aku pengen kamu ngerasain semua hal positif dan keajaiban yang cuma bisa didapetin kalo kamu ada di dunia ini. Semoga segala keinginanmu tercapai, apalagi yang kocak-kocak dan gak biasa, karena kamu tuh unik banget! Aku selalu percaya kalau kamu bisa melewati semua tantangan dengan kekuatan dan semangat yang luar biasa.<br><br>Terima kasih udah jadi bagian hidup aku yang paling berharga. Kamu bener-bener bikin hari-hari aku jadi lebih berarti dan penuh warna. Semoga di tahun yang baru ini, kamu makin bahagia, makin sukses, dan tentunya makin cantik (walaupun udah cantik banget sih!).<br><br>I love you so much! 💕`;
             messageContent.innerHTML = fullMessage;
             isTyping = false;
             messageContent.scrollTop = messageContent.scrollHeight;
@@ -328,10 +291,10 @@ function initializeGallery() {
         </div>
         <div class="photobox-progress">READY TO PRINT</div>
         <div class="photo-display">
-            <div class="photo-placeholder">Press START PRINT to begin photo session</div>
+            <div class="photo-placeholder">Press MULAI CETAK to start photo session</div>
         </div>
         <div class="photobox-controls">
-            <button class="photo-btn">START PRINT</button>
+            <button class="photo-btn">MULAI CETAK</button>
         </div>
     `;
     
@@ -356,45 +319,45 @@ function startPhotoShow() {
     
     if (!photoBtn || !photoDisplay || !progressDiv) return;
     
-    // Local photos from images folder
+    // Foto lokal dari folder images
     const photos = [
         {
-            text: 'OUR MEMORY TRIO😎❤️',
+            text: 'Our First Date 💕',
             image: './images/photo1.jpg'
         },
         {
-            text: 'OUR MEMORY TRIO😡🤗',
+            text: 'Birthday Moment 🎂',
             image: './images/photo2.jpg'
         },
         {
-            text: 'OUR MEMORY TRIO🥳🌚',
+            text: 'Adventure Time 🌟',
             image: './images/photo3.jpg'
         },
         {
-            text: 'OUR MEMORY TRIO🥔🔥',
+            text: 'Cozy Together ❤️',
             image: './images/photo4.jpg'
         },
         {
-            text: 'OUR MEMORY TRIO🎈🤩',
+            text: 'Sweet Memories 🥰',
             image: './images/photo5.jpg'
         },
         {
-            text: 'OUR MEMORY TRIO😈🌝',
+            text: 'Laugh Together 😂',
             image: './images/photo6.jpg'
         },
         {
-            text: 'OUR MEMORY TRIO👯‍♀️🎂',
+            text: 'Perfect Day ☀️',
             image: './images/photo7.jpg'
         },
         {
-            text: 'OUR MEMORY TRIO💥😜',
+            text: 'Love Forever 💖',
             image: './images/photo8.jpg'
         }
     ];
     
     console.log('Total photos:', photos.length);
     
-    photoBtn.textContent = 'PRINTING...';
+    photoBtn.textContent = 'MENCETAK...';
     photoBtn.disabled = true;
     progressDiv.textContent = 'INITIALIZING CAMERA...';
     
@@ -538,7 +501,7 @@ function startPhotoCapture(photos) {
             
             setTimeout(() => {
                 progressDiv.textContent = '🎉 PHOTO STRIP COMPLETE! 🎉';
-                photoBtn.textContent = 'PRINT AGAIN';
+                photoBtn.textContent = 'CETAK LAGI';
                 photoBtn.disabled = false;
                 
                 photoBtn.removeEventListener('click', startPhotoShow);
@@ -556,7 +519,7 @@ function startNewSession() {
     
     // Reset for new session
     progressDiv.textContent = 'READY TO PRINT';
-    photoBtn.textContent = 'START PRINT';
+    photoBtn.textContent = 'MULAI CETAK';
     
     // Remove old listener and add original
     photoBtn.removeEventListener('click', startNewSession);
@@ -565,7 +528,7 @@ function startNewSession() {
     // Clear display
     const photoDisplay = document.querySelector('.photo-display');
     if (photoDisplay) {
-        photoDisplay.innerHTML = '<div class="photo-placeholder">Press START PRINT to begin photo session</div>';
+        photoDisplay.innerHTML = '<div class="photo-placeholder">Press MULAI CETAK to start photo session</div>';
     }
     
     // CRITICAL: Reset photo index to exactly 0
@@ -588,10 +551,10 @@ function initializeMusicPlayer() {
             <div class="spotify-embed-container">
                 <iframe id="spotify-iframe" 
                         style="border-radius:12px" 
-                        src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M?utm_source=generator" 
+                        src="" 
                         width="100%" 
                         height="200" 
                         frameBorder="0" 
                         allowfullscreen="" 
-                        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">
-               
+                        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+                        l
