@@ -1,4 +1,4 @@
-/* Reset and base styles */
+/* ===== RESET & BASE ===== */
 * {
     margin: 0;
     padding: 0;
@@ -24,7 +24,7 @@ body {
     align-items: center;
 }
 
-/* Screen Transitions */
+/* ===== SCREEN TRANSITIONS ===== */
 .screen {
     display: none;
     opacity: 0;
@@ -45,7 +45,7 @@ body {
     transform: translateY(0);
 }
 
-/* Loading Screen */
+/* ===== LOADING SCREEN ===== */
 #loading-screen .gameboy-screen {
     width: 600px;
     height: 400px;
@@ -135,7 +135,7 @@ body {
     z-index: 2;
 }
 
-/* Main Gameboy Styles */
+/* ===== MAIN GAMEBOY ===== */
 .gameboy-body {
     width: 400px;
     height: 600px;
@@ -238,7 +238,7 @@ body {
     border-radius: 50%;
 }
 
-/* Menu Buttons */
+/* ===== MENU BUTTONS ===== */
 .menu-buttons {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -265,16 +265,12 @@ body {
     box-shadow: 0 6px 12px rgba(0,0,0,0.3);
 }
 
-.menu-btn:active {
-    transform: translateY(0);
-}
-
 .message-btn { background: linear-gradient(145deg, #4a90e2, #357abd); }
 .gallery-btn { background: linear-gradient(145deg, #e74c3c, #c0392b); }
 .music-btn { background: linear-gradient(145deg, #9b59b6, #8e44ad); }
 .tetris-btn { background: linear-gradient(145deg, #27ae60, #229954); }
 
-/* Controls */
+/* ===== CONTROLS ===== */
 .controls {
     display: flex;
     justify-content: space-between;
@@ -306,11 +302,6 @@ body {
     font-size: 20px;
     font-weight: bold;
     cursor: default;
-    transition: background 0.2s;
-}
-
-.dpad-center div:hover {
-    background: #666;
 }
 
 .dpad-up, .dpad-down {
@@ -348,15 +339,13 @@ body {
     background: linear-gradient(145deg, #e74c3c, #c0392b);
     color: white;
     box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-    transition: all 0.2s;
 }
 
 .action-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0,0,0,0.4);
 }
 
-/* Bottom Controls */
+/* ===== BOTTOM CONTROLS ===== */
 .bottom-controls {
     display: flex;
     justify-content: center;
@@ -373,7 +362,6 @@ body {
     font-family: inherit;
     font-size: 12px;
     cursor: pointer;
-    transition: all 0.2s;
 }
 
 .control-btn:hover {
@@ -381,7 +369,6 @@ body {
     transform: translateY(-1px);
 }
 
-/* Speaker Grille */
 .speaker-grille {
     position: absolute;
     bottom: 20px;
@@ -395,7 +382,7 @@ body {
     background-size: 8px 8px;
 }
 
-/* Page Container */
+/* ===== PAGE CONTAINER ===== */
 .page-container {
     width: 400px;
     height: 600px;
@@ -442,17 +429,15 @@ body {
     font-weight: bold;
     font-size: 14px;
     cursor: pointer;
-    transition: all 0.2s;
     background: #4a90e2;
     color: white;
 }
 
 .page-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
 }
 
-/* Message Screen */
+/* ===== MESSAGE SCREEN ===== */
 .message-content {
     flex: 1;
     padding: 15px;
@@ -461,15 +446,6 @@ body {
     font-size: 14px;
     line-height: 1.6;
     white-space: pre-wrap;
-}
-
-.message-content::-webkit-scrollbar {
-    width: 4px;
-}
-
-.message-content::-webkit-scrollbar-thumb {
-    background: #9bbc0f;
-    border-radius: 2px;
 }
 
 .skip-btn {
@@ -487,10 +463,9 @@ body {
 
 .skip-btn:hover {
     background: #c0392b;
-    transform: scale(1.05);
 }
 
-/* Gallery */
+/* ===== GALLERY ===== */
 .gallery-content {
     flex: 1;
     padding: 15px;
@@ -544,21 +519,15 @@ body {
     margin-bottom: 15px;
 }
 
-.photo-strip {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
 .photo-frame {
     background: #f0f0f0;
     border: 3px solid #333;
     border-radius: 6px;
-    height: 120px;
+    height: 100px;
+    margin-bottom: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s;
 }
 
 .photo-frame.filled {
@@ -580,7 +549,6 @@ body {
 
 .photo-btn:hover:not(:disabled) {
     background: #c0392b;
-    transform: scale(1.02);
 }
 
 .photo-btn:disabled {
@@ -588,7 +556,7 @@ body {
     cursor: not-allowed;
 }
 
-/* Music Screen */
+/* ===== MUSIC ===== */
 .music-content {
     flex: 1;
     padding: 15px;
@@ -609,12 +577,10 @@ body {
     color: #9bbc0f;
     border-radius: 4px;
     cursor: pointer;
-    transition: all 0.2s;
 }
 
 .song:hover {
     background: #2a2a4e;
-    transform: translateX(5px);
 }
 
 .song.playing {
@@ -639,22 +605,19 @@ body {
     color: white;
     font-size: 20px;
     cursor: pointer;
-    transition: all 0.2s;
 }
 
 .music-controls button:hover {
     transform: scale(1.1);
-    background: #357abd;
 }
 
 .now-playing {
     text-align: center;
     color: #9bbc0f;
     font-size: 12px;
-    padding: 5px;
 }
 
-/* Tetris Screen */
+/* ===== TETRIS ===== */
 .tetris-header {
     background: #1a1a1a;
     color: #9bbc0f;
@@ -698,11 +661,7 @@ body {
     font-size: 12px;
 }
 
-.tetris-btn:hover {
-    background: #357abd;
-}
-
-/* Modal */
+/* ===== MODAL ===== */
 .modal {
     display: none;
     position: fixed;
@@ -772,12 +731,4 @@ body {
 
 .modal-btn:hover {
     background: #357abd;
-    transform: scale(1.05);
-}
-
-/* Responsive */
-@media (max-width: 640px) {
-    .gameboy-body, .page-container {
-        transform: scale(0.8);
     }
-}
