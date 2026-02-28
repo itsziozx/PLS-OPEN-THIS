@@ -653,3 +653,449 @@
         }
     </style>
     </div>
+        <script>
+        // Game state
+        let currentScreen = 'loading';
+        let typewriterInterval = null;
+        let isTyping = false;
+        let currentPhotoIndex = 0;
+        let currentSongIndex = 0;
+        let isPlaying = false;
+        let audioPlayer = null;
+        let currentLetterIndex = 0;
+        
+        // Stats
+        let stats = { messagesRead: 0, photosViewed: 0, songsPlayed: 0 };
+        
+        // Easter egg tracking
+        let selectPressCount = 0;
+        let selectTimer = null;
+        let konamiIndex = 0;
+        const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+
+        // Letter contents
+        const letters = [
+            `Hi Miyu,
+
+I've been meaning to tell you this for so long. You're one of the most amazing people I've ever met.
+
+Your smile, your laugh, the way you care about others... everything about you is beautiful.
+
+I pray that Allah always keeps you happy and protected.
+
+Happy Birthday! 🎂`,
+            
+            `Dear Miyu,
+
+Remember when we first met? I didn't expect to meet someone so... unique.
+
+You were loud, funny, and weird in the best way possible. From that moment, I knew you were special.
+
+Thank you for coming into my life. 💕`,
+            
+            `Miyu,
+
+You were there when I was at my lowest. When I couldn't find the words, you just sat with me in silence.
+
+You didn't try to fix me — you just stayed. And that meant everything.
+
+Thank you for being my anchor. 🤍`,
+            
+            `Hey Miyu,
+
+I love our random conversations about everything and nothing.
+- Why cats are better than dogs
+- What if we could fly
+- That weird dream you had last night
+
+Your mind is such a beautiful place. I'm glad I get to visit it. 🌸`,
+            
+            `Dear Miyu,
+
+I don't know where life will take us. Maybe we'll be neighbors. Maybe we'll live in different cities.
+
+But I know one thing: no matter where we are, you'll always be special to me.
+
+Happy Birthday, dear friend. 🎂`,
+            
+            `My Dearest Miyu,
+
+If I had to describe you in one word, it would be: HOME.
+
+Not a place, but a feeling. The feeling of being understood without explanation.
+
+You are my home, Miyu. And I hope I'm yours too.
+
+Happy Birthday! 🎂✨`
+        ];
+
+        // Photos with OUR MEMORY TRIO + random emojis
+        const photos = [
+            { text: 'OUR MEMORY TRIO 🎮', image: './images/photo1.jpg' },
+            { text: 'OUR MEMORY TRIO 🎂', image: './images/photo2.jpg' },
+            { text: 'OUR MEMORY TRIO 🤪', image: './images/photo3.jpg' },
+            { text: 'OUR MEMORY TRIO 💪', image: './images/photo4.jpg' },
+            { text: 'OUR MEMORY TRIO 😂', image: './images/photo5.jpg' },
+            { text: 'OUR MEMORY TRIO 🌈', image: './images/photo6.jpg' },
+            { text: 'OUR MEMORY TRIO 🎉', image: './images/photo7.jpg' },
+            { text: 'OUR MEMORY TRIO 🙏', image: './images/photo8.jpg' }
+        ];
+
+        // Song titles
+        const songTitles = [
+            'Happy Birthday',
+            'My Love Mine All Mine - Mitski',
+            'Line Without a Hook - Ricky Montgomery',
+            '505 - Arctic Monkeys',
+            'RUDE! - Hearts2Hearts',
+            'Really Like You - BABYMONSTER'
+        ];
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            simulateLoading();
+            loadStats();
+            setupEventListeners();
+            setupKonami();
+        });
+
+        function simulateLoading() {
+            const progressFill = document.getElementById('progress-fill');
+            const progressText = document.getElementById('progress-text');
+            const loadingText = document.getElementById('loading-text');
+            let progress = 0;
+            const messages = [
+                'INITIALIZING..._',
+                'LOADING MEMORIES..._',
+                'PREPARING SURPRISE..._',
+                'ALMOST READY..._',
+                'LOADING COMPLETE!_'
+            ];
+            
+            const interval = setInterval(() => {
+                progress += Math.floor(Math.random() * 10) + 5;
+                if (progress > 100) progress = 100;
+                
+                progressFill.style.width = progress + '%';
+                progressText.textContent = progress + '%';
+                
+                const msgIndex = Math.floor((progress / 100) * (messages.length - 1));
+                loadingText.textContent = '> ' + messages[msgIndex];
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => showScreen('main'), 1000);
+                }
+            }, 200);
+        }
+
+        window.showScreen = (screenId) => {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            const targetScreen = document.getElementById(screenId + '-screen');
+            if (targetScreen) {
+                targetScreen.classList.add('active');
+                currentScreen = screenId;
+                if (screenId === 'message') selectLetter(0);
+                if (screenId === 'gallery') initializeGallery();
+                if (screenId === 'music') initializeMusic();
+            }
+        };
+
+        // Stats functions
+        function updateStats(stat) {
+            stats[stat]++;
+            localStorage.setItem('gameboyStats', JSON.stringify(stats));
+            displayStats();
+        }
+        
+        function loadStats() {
+            const saved = localStorage.getItem('gameboyStats');
+            if (saved) stats = JSON.parse(saved);
+            displayStats();
+        }
+        
+        function displayStats() {
+            document.getElementById('stats-messages').textContent = stats.messagesRead || 0;
+            document.getElementById('stats-photos').textContent = stats.photosViewed || 0;
+            document.getElementById('stats-songs').textContent = stats.songsPlayed || 0;
+        }
+
+        // Button functions
+        function pressSelect() {
+            selectPressCount++;
+            clearTimeout(selectTimer);
+            selectTimer = setTimeout(() => {
+                if (selectPressCount >= 3) openGlitchMessage();
+                selectPressCount = 0;
+            }, 1000);
+        }
+        
+        function pressA() {
+            if (konamiCode[konamiIndex] === 'a') {
+                konamiIndex++;
+                if (konamiIndex === konamiCode.length) {
+                    openGlitchMessage();
+                    konamiIndex = 0;
+                }
+            } else {
+                konamiIndex = 0;
+            }
+        }
+        
+        function pressB() {
+            if (konamiCode[konamiIndex] === 'b') {
+                konamiIndex++;
+                if (konamiIndex === konamiCode.length) {
+                    openGlitchMessage();
+                    konamiIndex = 0;
+                }
+            } else {
+                konamiIndex = 0;
+            }
+        }
+        
+        function pressUp() {
+            if (konamiCode[konamiIndex] === 'ArrowUp') konamiIndex++;
+            else konamiIndex = 0;
+        }
+        
+        function pressDown() {
+            if (konamiCode[konamiIndex] === 'ArrowDown') konamiIndex++;
+            else konamiIndex = 0;
+        }
+        
+        function pressLeft() {
+            if (konamiCode[konamiIndex] === 'ArrowLeft') konamiIndex++;
+            else konamiIndex = 0;
+        }
+        
+        function pressRight() {
+            if (konamiCode[konamiIndex] === 'ArrowRight') konamiIndex++;
+            else konamiIndex = 0;
+        }
+
+        function setupKonami() {
+            document.addEventListener('keydown', (e) => {
+                const key = e.key;
+                if (key === konamiCode[konamiIndex]) {
+                    konamiIndex++;
+                    if (konamiIndex === konamiCode.length) {
+                        openGlitchMessage();
+                        konamiIndex = 0;
+                    }
+                } else {
+                    konamiIndex = 0;
+                }
+            });
+        }
+
+        function setupEventListeners() {
+            const skipBtn = document.getElementById('skip-btn');
+            if (skipBtn) skipBtn.addEventListener('click', skipMessage);
+            
+            const photoBtn = document.getElementById('photo-btn');
+            if (photoBtn) photoBtn.addEventListener('click', startPhotoShow);
+        }
+
+        // Glitch message
+        function openGlitchMessage() {
+            document.getElementById('glitch-modal').classList.add('active');
+        }
+        
+        function closeGlitch() {
+            document.getElementById('glitch-modal').classList.remove('active');
+        }
+
+        // Message functions
+        function selectLetter(index) {
+            currentLetterIndex = index;
+            
+            document.querySelectorAll('.letter-btn').forEach((btn, i) => {
+                if (i === index) btn.classList.add('active');
+                else btn.classList.remove('active');
+            });
+            
+            if (typewriterInterval) clearInterval(typewriterInterval);
+            
+            const messageContent = document.getElementById('message-content');
+            messageContent.innerHTML = '';
+            
+            let charIndex = 0;
+            isTyping = true;
+            
+            typewriterInterval = setInterval(() => {
+                if (charIndex < letters[index].length) {
+                    const char = letters[index][charIndex];
+                    messageContent.innerHTML += char === '\n' ? '<br>' : char;
+                    charIndex++;
+                    messageContent.scrollTop = messageContent.scrollHeight;
+                } else {
+                    clearInterval(typewriterInterval);
+                    isTyping = false;
+                    updateStats('messagesRead');
+                }
+            }, 30);
+        }
+
+        window.skipMessage = function() {
+            if (isTyping && typewriterInterval) {
+                clearInterval(typewriterInterval);
+                const messageContent = document.getElementById('message-content');
+                messageContent.innerHTML = letters[currentLetterIndex].replace(/\n/g, '<br>');
+                isTyping = false;
+                updateStats('messagesRead');
+            }
+        };
+
+        // Gallery functions
+        function initializeGallery() {
+            document.getElementById('photo-display').innerHTML = '<div class="photo-placeholder">Press START PRINT to begin</div>';
+            document.getElementById('photobox-progress').textContent = '📸 READY TO PRINT';
+            document.getElementById('photo-btn').disabled = false;
+            document.getElementById('photo-btn').textContent = 'START PRINT';
+            currentPhotoIndex = 0;
+        }
+
+        function startPhotoShow() {
+            const photoBtn = document.getElementById('photo-btn');
+            const photoDisplay = document.getElementById('photo-display');
+            const progressDiv = document.getElementById('photobox-progress');
+            
+            photoBtn.disabled = true;
+            photoBtn.textContent = 'PRINTING...';
+            progressDiv.textContent = 'INITIALIZING CAMERA...';
+            
+            let framesHTML = '';
+            for (let i = 0; i < photos.length; i++) {
+                framesHTML += `
+                    <div class="photo-frame" id="frame-${i+1}" onclick="viewPhoto(${i})">
+                        <img src="${photos[i].image}" alt="${photos[i].text}" 
+                             style="width:100%; height:100%; object-fit:cover; display:block;"
+                             onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'padding:20px; text-align:center;\'>${photos[i].text}</div>';">
+                    </div>
+                `;
+            }
+            
+            photoDisplay.innerHTML = `
+                <div class="photo-strip">
+                    <div class="photo-strip-header">PHOTOSTRIP SESSION</div>
+                    <div class="photo-frames-container">
+                        ${framesHTML}
+                    </div>
+                    <div class="photo-strip-footer">🎂 HAPPY BIRTHDAY MIYU! 🎂</div>
+                </div>
+            `;
+            
+            progressDiv.textContent = '🎉 PHOTO STRIP COMPLETE! 🎉';
+            photoBtn.textContent = 'PRINT AGAIN';
+            photoBtn.disabled = false;
+            updateStats('photosViewed');
+        }
+
+        window.viewPhoto = function(index) {
+            const modal = document.createElement('div');
+            modal.style.position = 'fixed';
+            modal.style.top = '0';
+            modal.style.left = '0';
+            modal.style.width = '100%';
+            modal.style.height = '100%';
+            modal.style.backgroundColor = 'rgba(0,0,0,0.95)';
+            modal.style.display = 'flex';
+            modal.style.justifyContent = 'center';
+            modal.style.alignItems = 'center';
+            modal.style.zIndex = '3000';
+            
+            const img = new Image();
+            img.src = photos[index].image;
+            img.style.maxWidth = '90%';
+            img.style.maxHeight = '70vh';
+            img.style.borderRadius = '10px';
+            img.style.marginBottom = '15px';
+            img.onerror = function() {
+                this.style.display = 'none';
+                this.insertAdjacentHTML('afterend', '<div style="color:white; font-size:48px; padding:40px;">📸</div>');
+            };
+            
+            modal.innerHTML = `
+                <div style="background:#2d5016; border:4px solid #9bbc0f; border-radius:10px; padding:20px; max-width:90%; max-height:90%; text-align:center;">
+                    ${img.outerHTML}
+                    <div style="color:#9bbc0f; font-size:18px; margin:15px;">${photos[index].text}</div>
+                    <button onclick="this.parentElement.parentElement.remove()" 
+                            style="padding:10px 30px; background:#4a90e2; color:white; border:none; border-radius:4px; cursor:pointer; font-size:16px;">
+                        CLOSE
+                    </button>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+        };
+
+        // Music functions
+        function initializeMusic() {
+            if (!audioPlayer) {
+                audioPlayer = new Audio();
+                audioPlayer.addEventListener('ended', nextSong);
+            }
+            updateNowPlaying();
+            
+            document.querySelectorAll('.song').forEach((song, i) => {
+                if (i === currentSongIndex) song.classList.add('playing');
+                else song.classList.remove('playing');
+            });
+        }
+
+        function playSong(index) {
+            if (index < 0 || index >= 6) return;
+            currentSongIndex = index;
+            updateNowPlaying();
+            updateStats('songsPlayed');
+            
+            document.querySelectorAll('.song').forEach((song, i) => {
+                if (i === currentSongIndex) song.classList.add('playing');
+                else song.classList.remove('playing');
+            });
+        }
+
+        function playPause() {
+            isPlaying = !isPlaying;
+            document.getElementById('play-pause-btn').textContent = isPlaying ? '⏸' : '⏯';
+        }
+
+        function prevSong() {
+            let newIndex = currentSongIndex - 1;
+            if (newIndex < 0) newIndex = 5;
+            playSong(newIndex);
+        }
+
+        function nextSong() {
+            let newIndex = currentSongIndex + 1;
+            if (newIndex >= 6) newIndex = 0;
+            playSong(newIndex);
+        }
+
+        function updateNowPlaying() {
+            document.getElementById('now-playing').textContent = `🎜 Now Playing: ${songTitles[currentSongIndex]}`;
+        }
+
+        // Cake functions
+        function showCake() {
+            document.getElementById('cake-modal').classList.add('active');
+        }
+        
+        function closeCake() {
+            document.getElementById('cake-modal').classList.remove('active');
+        }
+        
+        function blowCandle() {
+            const candle = document.getElementById('birthday-candle');
+            const message = document.getElementById('cake-message');
+            candle.classList.add('blown');
+            message.textContent = '🎉 HAPPY BIRTHDAY MIYU! 🎉';
+            
+            setTimeout(() => {
+                openGlitchMessage();
+            }, 1500);
+        }
+    </script>
+</body>
+</html>
