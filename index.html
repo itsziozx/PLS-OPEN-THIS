@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎮 GameBoy Birthday Gift + PACMAN</title>
+    <title>🎮 GameBoy Birthday Gift</title>
     <style>
         /* ===== RESET & BASE ===== */
         * {
@@ -21,27 +21,6 @@
             align-items: center;
             overflow: hidden;
             position: relative;
-        }
-
-        /* ===== CLOUD BACKGROUND ===== */
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100" opacity="0.1"><path fill="white" d="M30 50 Q40 30 60 30 Q80 30 90 50 Q100 70 80 80 Q60 90 40 80 Q20 70 30 50"/><path fill="white" d="M130 40 Q140 20 160 20 Q180 20 190 40 Q200 60 180 70 Q160 80 140 70 Q120 60 130 40"/></svg>');
-            background-repeat: repeat;
-            background-size: 200px 100px;
-            animation: moveClouds 60s linear infinite;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        @keyframes moveClouds {
-            0% { background-position: 0 0; }
-            100% { background-position: 1000px 0; }
         }
 
         #gameboy-container {
@@ -175,6 +154,7 @@
             box-shadow: 0 20px 40px rgba(0,0,0,0.3), inset 0 2px 4px rgba(255,255,255,0.8);
             position: relative;
             z-index: 2;
+            margin: auto;
         }
 
         .gameboy-header {
@@ -296,10 +276,6 @@
             box-shadow: 0 6px 12px rgba(0,0,0,0.3);
         }
 
-        .menu-btn:active {
-            transform: translateY(0);
-        }
-
         .message-btn { background: linear-gradient(145deg, #4a90e2, #357abd); }
         .gallery-btn { background: linear-gradient(145deg, #e74c3c, #c0392b); }
         .music-btn { background: linear-gradient(145deg, #9b59b6, #8e44ad); }
@@ -338,11 +314,6 @@
             font-size: 20px;
             font-weight: bold;
             cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .dpad-center div:hover {
-            background: #666;
         }
 
         .dpad-up, .dpad-down {
@@ -380,19 +351,8 @@
             background: linear-gradient(145deg, #e74c3c, #c0392b);
             color: white;
             box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-            transition: all 0.2s;
         }
 
-        .action-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.4);
-        }
-
-        .action-btn:active {
-            transform: translateY(0);
-        }
-
-        /* ===== BOTTOM CONTROLS ===== */
         .bottom-controls {
             display: flex;
             justify-content: center;
@@ -409,16 +369,6 @@
             font-family: inherit;
             font-size: 12px;
             cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .control-btn:hover {
-            background: #777;
-            transform: translateY(-1px);
-        }
-
-        .control-btn:active {
-            transform: translateY(0);
         }
 
         .speaker-grille {
@@ -445,7 +395,7 @@
             border: 4px solid #ffd700;
             display: flex;
             flex-direction: column;
-            z-index: 2;
+            margin: auto;
         }
 
         .page-screen {
@@ -489,87 +439,6 @@
 
         .page-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-        }
-
-        .page-btn:active {
-            transform: translateY(0);
-        }
-
-        /* ===== MESSAGE SCREEN ===== */
-        .message-content {
-            flex: 1;
-            padding: 15px;
-            overflow-y: auto;
-            color: #9bbc0f;
-            font-size: 14px;
-            line-height: 1.6;
-            white-space: pre-wrap;
-        }
-
-        .message-content::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        .message-content::-webkit-scrollbar-thumb {
-            background: #9bbc0f;
-            border-radius: 2px;
-        }
-
-        .letter-selector {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 5px;
-            padding: 10px;
-            background: #1a1a2e;
-            border-bottom: 2px solid #9bbc0f;
-        }
-
-        .letter-btn {
-            flex: 1;
-            min-width: 60px;
-            padding: 8px;
-            background: #4a90e2;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 12px;
-            transition: all 0.2s;
-        }
-
-        .letter-btn:hover {
-            background: #357abd;
-            transform: scale(1.05);
-        }
-
-        .letter-btn.active {
-            background: #f39c12;
-            color: #000;
-            font-weight: bold;
-        }
-
-        .skip-btn {
-            margin: 10px auto;
-            padding: 6px 12px;
-            background: #e74c3c;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 12px;
-            font-weight: bold;
-            width: fit-content;
-            transition: all 0.2s;
-        }
-
-        .skip-btn:hover {
-            background: #c0392b;
-            transform: scale(1.05);
-        }
-
-        .skip-btn:active {
-            transform: scale(0.95);
         }
     </style>
 </head>
@@ -587,8 +456,8 @@
                     </div>
                 </div>
             </div>
-    </div>
-    <!-- Main Screen -->
+                </div>
+                <!-- Main Screen -->
 <div id="main-screen" class="screen">
     <div class="gameboy-body">
         <div class="gameboy-header">
@@ -624,20 +493,20 @@
         <div class="controls">
             <div class="dpad">
                 <div class="dpad-center">
-                    <div class="dpad-up" onclick="navigateMenu('up')">↑</div>
-                    <div class="dpad-left" onclick="navigateMenu('left')">←</div>
-                    <div class="dpad-right" onclick="navigateMenu('right')">→</div>
-                    <div class="dpad-down" onclick="navigateMenu('down')">↓</div>
+                    <div class="dpad-up">↑</div>
+                    <div class="dpad-left">←</div>
+                    <div class="dpad-right">→</div>
+                    <div class="dpad-down">↓</div>
                 </div>
             </div>
             <div class="action-buttons">
-                <button class="action-btn b-btn" onclick="pressB()">B</button>
-                <button class="action-btn a-btn" onclick="pressA()">A</button>
+                <button class="action-btn b-btn">B</button>
+                <button class="action-btn a-btn">A</button>
             </div>
         </div>
 
         <div class="bottom-controls">
-            <button class="control-btn select-btn" onclick="pressSelect()">SELECT</button>
+            <button class="control-btn select-btn">SELECT</button>
             <button class="control-btn start-btn" onclick="showScreen('main')">START</button>
         </div>
 
@@ -694,7 +563,182 @@
         </div>
     </div>
 </div>
-    <!-- Music Screen -->
+
+<style>
+    /* Gallery specific styles */
+    .gallery-content {
+        flex: 1;
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+    }
+    .photobox-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #666;
+        padding: 8px 12px;
+        border-radius: 4px;
+        margin-bottom: 10px;
+    }
+    .photobox-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+    }
+    .photobox-dot.red { background: #ff4444; }
+    .photobox-dot.green { background: #44ff44; }
+    .photobox-title {
+        color: #ffff00;
+        font-size: 12px;
+        font-weight: bold;
+    }
+    .photobox-progress {
+        background: #333;
+        border-radius: 4px;
+        margin-bottom: 15px;
+        padding: 8px;
+        color: #9bbc0f;
+        font-size: 11px;
+        text-align: center;
+    }
+    .photo-display {
+        background: #1a1a2e;
+        border-radius: 8px;
+        padding: 15px;
+        min-height: 250px;
+        max-height: 300px;
+        overflow-y: auto;
+        margin-bottom: 15px;
+    }
+    .photo-strip {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .photo-strip-header {
+        text-align: center;
+        color: #9bbc0f;
+        font-size: 12px;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+    .photo-frames-container {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+    .photo-frame {
+        background: #f0f0f0;
+        border: 3px solid #333;
+        border-radius: 6px;
+        height: 120px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+    }
+    .photo-frame.filled {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+    }
+    .photo-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    .photo-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(0,0,0,0.7);
+        color: white;
+        padding: 5px;
+        text-align: center;
+        font-size: 10px;
+    }
+    .photo-placeholder {
+        text-align: center;
+        color: #9bbc0f;
+        font-size: 14px;
+        margin-top: 50px;
+    }
+    .photobox-controls {
+        display: flex;
+        justify-content: center;
+        margin-top: 10px;
+    }
+    .photo-btn {
+        padding: 10px 20px;
+        background: #e74c3c;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: bold;
+        width: 100%;
+    }
+    .photo-btn:disabled {
+        background: #666;
+        cursor: not-allowed;
+    }
+    .photo-strip-footer {
+        text-align: center;
+        color: #9bbc0f;
+        font-size: 12px;
+        font-weight: bold;
+        margin-top: 5px;
+    }
+    .message-content {
+        flex: 1;
+        padding: 15px;
+        overflow-y: auto;
+        color: #9bbc0f;
+        font-size: 14px;
+        line-height: 1.6;
+        white-space: pre-wrap;
+    }
+    .letter-selector {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+        padding: 10px;
+        background: #1a1a2e;
+        border-bottom: 2px solid #9bbc0f;
+    }
+    .letter-btn {
+        flex: 1;
+        min-width: 60px;
+        padding: 8px;
+        background: #4a90e2;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 12px;
+    }
+    .letter-btn.active {
+        background: #f39c12;
+        color: #000;
+        font-weight: bold;
+    }
+    .skip-btn {
+        margin: 10px auto;
+        padding: 6px 12px;
+        background: #e74c3c;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 12px;
+        width: fit-content;
+    }
+    </style>
+        <!-- Music Screen -->
     <div id="music-screen" class="screen">
         <div class="page-container">
             <div class="page-screen">
@@ -803,6 +847,151 @@
         </div>
     </div>
 
+    <style>
+        /* Music styles */
+        .music-content {
+            flex: 1;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+        .playlist {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 15px;
+        }
+        .song {
+            padding: 10px;
+            margin-bottom: 5px;
+            background: #1a1a2e;
+            color: #9bbc0f;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .song:hover { background: #2a2a4e; }
+        .song.playing {
+            background: #4a90e2;
+            color: white;
+            font-weight: bold;
+        }
+        .music-controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 10px;
+        }
+        .music-controls button {
+            width: 50px;
+            height: 50px;
+            border: none;
+            border-radius: 50%;
+            background: #4a90e2;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        .now-playing {
+            text-align: center;
+            color: #9bbc0f;
+            font-size: 12px;
+            padding: 5px;
+        }
+        .stats-panel {
+            background: #1a1a1a;
+            border: 2px solid #9bbc0f;
+            border-radius: 8px;
+            padding: 10px;
+            color: #9bbc0f;
+            font-size: 11px;
+        }
+        .stats-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 5px 0;
+        }
+        .stats-value {
+            color: #ffff00;
+            font-weight: bold;
+        }
+        
+        /* Tetris styles */
+        .tetris-header {
+            background: #1a1a1a;
+            color: #9bbc0f;
+            padding: 10px;
+            text-align: center;
+        }
+        .tetris-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 5px;
+            font-size: 12px;
+        }
+        .tetris-game {
+            display: flex;
+            justify-content: center;
+            padding: 10px;
+            background: #000;
+        }
+        #tetris-canvas {
+            border: 2px solid #9bbc0f;
+            background: #000;
+        }
+        .tetris-controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 10px;
+        }
+        .tetris-btn {
+            padding: 8px 12px;
+            background: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        /* Pacman styles */
+        .pacman-header {
+            background: #1a1a1a;
+            color: #f39c12;
+            padding: 10px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .pacman-stats {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px;
+            background: #1a1a2e;
+            color: #f39c12;
+            font-size: 12px;
+        }
+        .pacman-game {
+            display: flex;
+            justify-content: center;
+            padding: 10px;
+            background: #000;
+        }
+        #pacman-canvas {
+            border: 2px solid #f39c12;
+            background: #000;
+        }
+        .pacman-btn {
+            padding: 8px 12px;
+            background: #f39c12;
+            color: #000;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+        }
+    </style>
+
     <!-- Game Over Modal -->
     <div id="game-over-modal" class="modal">
         <div class="modal-content">
@@ -851,625 +1040,453 @@
             <div class="final-message-text">
                 <p>You found the secret code!</p>
                 <p class="love-text">Mango is the best TWIN ever! 💕</p>
-                <p>🕹️ KONAMI CODE ACTIVATED 🕹️</p>
             </div>
             <button class="modal-btn" onclick="closeSecret()">OK</button>
         </div>
     </div>
-</div>
 
-<div class="secret-message" id="secret-message">
-    🎮 SECRET CODE ACTIVATED! 🎮<br>
-    YOU ARE AWESOME, MANGO!
-                            </div>
-                                <script>
-        // Game state
-        let currentScreen = 'loading';
-        let tetrisGame = null;
-        let gameScore = 0;
-        let gameLevel = 1;
-        let gameLines = 0;
-        let typewriterInterval = null;
-        let isTyping = false;
-        let currentPhotoIndex = 0;
-        let currentSongIndex = 0;
-        let isPlaying = false;
-        let gameOverTimer = null;
-        let audioPlayer = null;
-        let currentLetterIndex = 0;
+    <style>
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal.active {
+            display: flex;
+        }
+        .modal-content {
+            background: #2d5016;
+            border: 4px solid #9bbc0f;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            max-width: 300px;
+        }
+        .game-over-text {
+            color: #ff4444;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            animation: blink 1s infinite;
+        }
+        .final-message-title {
+            color: #ffff00;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .final-message-text {
+            color: #9bbc0f;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        .love-text {
+            color: #ff69b4;
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .modal-btn {
+            padding: 10px 20px;
+            background: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+        }
         
-        // Pacman variables
-        let pacmanGame = null;
-        let pacmanInterval = null;
-        let pacmanPaused = false;
+        /* Cake styles */
+        .cake-container {
+            padding: 20px;
+            text-align: center;
+        }
+        .cake {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 20px;
+        }
+        .plate {
+            width: 220px;
+            height: 20px;
+            background: #ddd;
+            border-radius: 10px;
+            position: absolute;
+            bottom: -10px;
+            left: -10px;
+        }
+        .layer {
+            width: 200px;
+            height: 40px;
+            background: #f8b3b3;
+            border-radius: 10px;
+            position: absolute;
+            left: 0;
+        }
+        .layer-bottom { bottom: 20px; background: #f8a3a3; }
+        .layer-middle { bottom: 60px; background: #f89393; width: 180px; left: 10px; }
+        .layer-top { bottom: 100px; background: #f88383; width: 160px; left: 20px; }
+        .icing {
+            width: 220px;
+            height: 10px;
+            background: #fff0f0;
+            border-radius: 5px;
+            position: absolute;
+            bottom: 70px;
+            left: -10px;
+            opacity: 0.5;
+        }
+        .candle {
+            width: 20px;
+            height: 60px;
+            background: #ffd700;
+            border-radius: 5px;
+            position: absolute;
+            bottom: 160px;
+            left: 90px;
+            cursor: pointer;
+        }
+        .flame {
+            width: 15px;
+            height: 25px;
+            background: #ff9900;
+            border-radius: 50%;
+            position: absolute;
+            top: -20px;
+            left: 2.5px;
+            animation: flicker 0.3s infinite alternate;
+        }
+        @keyframes flicker {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(1.2); opacity: 0.8; }
+        }
+        .candle.blown .flame { display: none; }
+        .cake-message {
+            color: #9bbc0f;
+            font-size: 16px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+    </style>
+    </div>
+    <script>
+    // Game state
+    let currentScreen = 'loading';
+    let tetrisGame = null;
+    let gameScore = 0;
+    let gameLevel = 1;
+    let gameLines = 0;
+    let typewriterInterval = null;
+    let isTyping = false;
+    let currentPhotoIndex = 0;
+    let currentSongIndex = 0;
+    let isPlaying = false;
+    let gameOverTimer = null;
+    let audioPlayer = null;
+    let currentLetterIndex = 0;
+    let pacmanGame = { running: false };
+    let pacmanInterval = null;
+    let pacmanPaused = false;
+    
+    // Stats
+    let stats = {
+        messagesRead: 0,
+        photosViewed: 0,
+        gamesPlayed: 0,
+        songsPlayed: 0,
+        pacmanScore: 0
+    };
+    
+    // Photos (with placeholder images)
+    const photos = [
+        { text: 'TWIN MEMORY 1 🎮', color: '#ff6b6b' },
+        { text: 'TWIN MEMORY 2 🎂', color: '#4ecdc4' },
+        { text: 'TWIN MEMORY 3 🤪', color: '#45b7d1' },
+        { text: 'TWIN MEMORY 4 💪', color: '#96ceb4' },
+        { text: 'TWIN MEMORY 5 😂', color: '#ffeaa7' },
+        { text: 'TWIN MEMORY 6 🌈', color: '#dfe6e9' },
+        { text: 'TWIN MEMORY 7 🎉', color: '#fab1a0' },
+        { text: 'TWIN MEMORY 8 🙏', color: '#a29bfe' }
+    ];
+
+    // Song titles
+    const songTitles = [
+        'Happy Birthday',
+        'My Love Mine All Mine - Mitski',
+        'Line Without a Hook - Ricky Montgomery',
+        '505 - Arctic Monkeys',
+        'RUDE! - Hearts2Hearts',
+        'Really Like You - BABYMONSTER'
+    ];
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', function() {
+        initializeApp();
+        loadStats();
+    });
+
+    function initializeApp() {
+        simulateLoading();
+        initializeTetris();
+    }
+
+    function simulateLoading() {
+        const progressFill = document.getElementById('progress-fill');
+        const progressText = document.getElementById('progress-text');
+        const loadingText = document.getElementById('loading-text');
         
-        // Stats
-        let stats = {
-            messagesRead: 0,
-            photosViewed: 0,
-            gamesPlayed: 0,
-            songsPlayed: 0,
-            pacmanScore: 0
-        };
+        let progress = 0;
+        const messages = [
+            'INITIALIZING..._',
+            'LOADING MEMORIES..._',
+            'PREPARING SURPRISE..._',
+            'ALMOST READY..._',
+            'LOADING COMPLETE!_'
+        ];
         
-        // Easter egg tracking
-        let konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
-        let konamiIndex = 0;
-        let selectPressCount = 0;
-        let selectTimer = null;
+        const interval = setInterval(() => {
+            progress += Math.floor(Math.random() * 10) + 5;
+            if (progress > 100) progress = 100;
+            
+            progressFill.style.width = progress + '%';
+            progressText.textContent = progress + '%';
+            
+            const msgIndex = Math.floor((progress / 100) * (messages.length - 1));
+            loadingText.textContent = '> ' + messages[msgIndex];
+            
+            if (progress >= 100) {
+                clearInterval(interval);
+                setTimeout(() => {
+                    showScreen('main');
+                }, 1000);
+            }
+        }, 200);
+    }
 
-        // ===== SURAT-SURAT UNTUK MANGO =====
-        const letters = [
-            // Surat 1
-            `Hi, Miyu — or as I often call you, Mango.
-
-I suddenly realized: we've come this far together, and I don't think I've ever thanked you properly.
-
-Thank you for being such a... weird TWIN.
-In the most positive way possible.
-
-You're so kind. Sometimes I think, "How can Mango be this patient with me?"
-Patient — even though I know I sometimes annoy you with the same old antics.
-
-You're also loud. Super loud.
-When we hang out, there's never a dull moment. Your voice is like the most comforting background noise in my life.
-Chatty, talkative, love to nag. But somehow, when I don't hear your voice, something feels missing.
-
-Caring. So much.
-Down to the little things others don't notice.
-You always know when to send a message, when to show up, when to just sit beside me in silence.
-
-Attentive. Sometimes it makes me think, "Wow, Mango really looks out for me."
-You're beautiful — that's a fact.
-But what makes you different isn't just your looks, but the way you see the world: always finding room to laugh, even in the hardest times.
-
-Funny, humorous, love to joke.
-You're the type of person who can make people mad, but also make them forget why they were angry.
-Because beneath all your randomness, there's a heart that's incredibly sincere.
-
-You don't dwell on things — that's what I admire most.
-You're the type who says, "Problem? Okay, next." Not because you don't feel, but because you choose not to drown. And that's really cool.
-
-Most importantly: you always make my day colorful.
-Even on the grayest days, you show up — through chats, through stories, through your random antics — and everything becomes a little brighter.
-
-Thank you for being a place to come home to, a place to share stories, a place to laugh, a place to cry, and a place to just be myself without fear of judgment.
-
-Thank you for choosing to be my TWIN, out of thousands of people.
-
-I love you, Mango — as a TWIN.
-Never change.
-Keep being you — annoying, loud, funny, caring, and always making life a little less quiet.
-
-— From someone who's always proud of you,  
-ItsZio & Uncle Vic 💕`,
-
-            // Surat 2
-            `Dear Mango,
-
-Remember when we first met? I didn't expect that someone could be this... loud, weird, and amazing all at once.
-
-You came into my life like a hurricane — chaotic, unstoppable, and somehow exactly what I needed. You brought color to my gray days and laughter to my quiet moments.
-
-Thank you for every random chat at 2 AM, for every stupid joke that made me laugh anyway, for every time you checked in on me just because.
-
-Those are the moments I'll always treasure.
-
-— Your TWIN forever`,
-
-            // Surat 3
-            `Mango,
-
-You were there when I was at my lowest. When I couldn't find the words, you just sat with me in silence. When I needed someone, you showed up without being asked.
-
-I never told you this, but that meant everything.
-
-You didn't try to fix me — you just stayed. And sometimes, that's exactly what someone needs.
-
-Thank you for being my anchor.
-
-— Always grateful`,
-
-            // Surat 4
-            `Mango,
-
-I love how you can talk about the most random things for hours:
-- Why cats are better than dogs (wrong opinion, but okay)
-- What if we could talk to plants
-- That one dream you had where you were a detective
-- Why the moon looks sad sometimes
-
-Your mind is such a weird, beautiful place. I'm glad I get to visit it.
-
-— Your fellow weirdo`,
-
-            // Surat 5
-            `Dear Mango,
-
-I don't know where life will take us. Maybe we'll be neighbors. Maybe we'll live in different countries. Maybe we'll still be sending each other memes at 3 AM when we're 80.
-
-But I know one thing: no matter where we are, you'll always be my TWIN.
-
-— Yours always`,
-
-            // Surat 6
-            `My Dearest Mango,
-
-If I had to describe you in one word, it would be: HOME.
-
-Not a place, but a feeling. The feeling of being understood without explanation. The feeling of being accepted without condition.
-
-You are my home, Mango. And I hope I'm yours too.
-
-— Love, your TWIN 💕`
-        ];
-
-        // Photos WITH IMAGE PATHS
-        const photos = [
-            { text: 'TWIN MEMORY TRIO 🎮', image: './images/photo1.jpg' },
-            { text: 'TWIN MEMORY TRIO 🎂', image: './images/photo2.jpg' },
-            { text: 'TWIN MEMORY TRIO 🤪', image: './images/photo3.jpg' },
-            { text: 'TWIN MEMORY TRIO 💪', image: './images/photo4.jpg' },
-            { text: 'TWIN MEMORY TRIO 😂', image: './images/photo5.jpg' },
-            { text: 'TWIN MEMORY TRIO 🌈', image: './images/photo6.jpg' },
-            { text: 'TWIN MEMORY TRIO 🎉', image: './images/photo7.jpg' },
-            { text: 'TWIN MEMORY TRIO 🙏', image: './images/photo8.jpg' }
-        ];
-
-        // Song titles
-        const songTitles = [
-            'Happy Birthday',
-            'My Love Mine All Mine - Mitski',
-            'Line Without a Hook - Ricky Montgomery',
-            '505 - Arctic Monkeys',
-            'RUDE! - Hearts2Hearts',
-            'Really Like You - BABYMONSTER'
-        ];
-
-        // Audio files
-        const audioFiles = [
-            './songs/happy-birthday.mp3',
-            './songs/my-love-mine-all-mine.mp3',
-            './songs/line-without-a-hook.mp3',
-            './songs/505.mp3',
-            './songs/rude.mp3',
-            './songs/really-like-you.mp3'
-        ];
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            initializeApp();
-            setupEventListeners();
-            loadStats();
+    window.showScreen = function(screenId) {
+        document.querySelectorAll('.screen').forEach(screen => {
+            screen.classList.remove('active');
         });
+        
+        const targetScreen = document.getElementById(screenId + '-screen');
+        if (targetScreen) {
+            targetScreen.classList.add('active');
+            currentScreen = screenId;
+            
+            if (screenId === 'message') selectLetter(0);
+            if (screenId === 'gallery') initializeGallery();
+            if (screenId === 'music') initializeMusic();
+        }
+    };
 
-        function initializeApp() {
-            simulateLoading();
-            initializeTetris();
-            initializePacman();
+    // Stats functions
+    function updateStats(statName) {
+        stats[statName]++;
+        localStorage.setItem('gameboyStats', JSON.stringify(stats));
+        displayStats();
+    }
+    
+    function loadStats() {
+        const saved = localStorage.getItem('gameboyStats');
+        if (saved) {
+            stats = JSON.parse(saved);
+        }
+        displayStats();
+    }
+    
+    function displayStats() {
+        document.getElementById('stats-messages').textContent = stats.messagesRead || 0;
+        document.getElementById('stats-photos').textContent = stats.photosViewed || 0;
+        document.getElementById('stats-games').textContent = stats.gamesPlayed || 0;
+        document.getElementById('stats-songs').textContent = stats.songsPlayed || 0;
+        document.getElementById('stats-pacman').textContent = stats.pacmanScore || 0;
+    }
+
+    // Message functions
+    function selectLetter(index) {
+        currentLetterIndex = index;
+        
+        document.querySelectorAll('.letter-btn').forEach((btn, i) => {
+            if (i === index) btn.classList.add('active');
+            else btn.classList.remove('active');
+        });
+        
+        const letters = [
+            `Hi Mango... I've been meaning to tell you this for so long.`,
+            `Remember when we first met? You were so loud and weird.`,
+            `You were there when I was at my lowest. Thank you.`,
+            `I love our random conversations about everything and nothing.`,
+            `Wherever life takes us, you'll always be my TWIN.`,
+            `You are my home, Mango. Happy Birthday! 💕`
+        ];
+        
+        const messageContent = document.getElementById('message-content');
+        messageContent.innerHTML = letters[index];
+        updateStats('messagesRead');
+    }
+
+    function skipMessage() {
+        const messageContent = document.getElementById('message-content');
+        messageContent.innerHTML = messageContent.innerHTML;
+    }
+                // Gallery functions
+        function initializeGallery() {
+            const photoDisplay = document.getElementById('photo-display');
+            photoDisplay.innerHTML = '<div class="photo-placeholder">Press START PRINT to begin</div>';
+            document.getElementById('photobox-progress').textContent = '📸 READY TO PRINT';
+            document.getElementById('photo-btn').disabled = false;
+            document.getElementById('photo-btn').textContent = 'START PRINT';
+            currentPhotoIndex = 0;
         }
 
-        function simulateLoading() {
-            const progressFill = document.getElementById('progress-fill');
-            const progressText = document.getElementById('progress-text');
-            const loadingText = document.getElementById('loading-text');
+        function startPhotoShow() {
+            const photoBtn = document.getElementById('photo-btn');
+            const photoDisplay = document.getElementById('photo-display');
+            const progressDiv = document.getElementById('photobox-progress');
             
-            let progress = 0;
-            const messages = [
-                'INITIALIZING..._',
-                'LOADING MEMORIES..._',
-                'PREPARING SURPRISE..._',
-                'ALMOST READY..._',
-                'LOADING COMPLETE!_'
-            ];
+            photoBtn.disabled = true;
+            photoBtn.textContent = 'PRINTING...';
+            progressDiv.textContent = 'INITIALIZING CAMERA...';
             
-            const interval = setInterval(() => {
-                progress += Math.floor(Math.random() * 10) + 5;
-                if (progress > 100) progress = 100;
-                
-                progressFill.style.width = progress + '%';
-                progressText.textContent = progress + '%';
-                
-                const msgIndex = Math.floor((progress / 100) * (messages.length - 1));
-                loadingText.textContent = '> ' + messages[msgIndex];
-                
-                if (progress >= 100) {
-                    clearInterval(interval);
-                    setTimeout(() => {
-                        showScreen('main');
-                    }, 1000);
-                }
-            }, 200);
+            let framesHTML = '';
+            for (let i = 0; i < photos.length; i++) {
+                framesHTML += `
+                    <div class="photo-frame" id="frame-${i+1}" style="background: ${photos[i].color};">
+                        <div class="photo-content" style="color:white; text-align:center; padding:10px;">${photos[i].text}</div>
+                    </div>
+                `;
+            }
+            
+            photoDisplay.innerHTML = `
+                <div class="photo-strip">
+                    <div class="photo-strip-header">PHOTOSTRIP SESSION</div>
+                    <div class="photo-frames-container">
+                        ${framesHTML}
+                    </div>
+                    <div class="photo-strip-footer">🎂 HAPPY BIRTHDAY! 🎂</div>
+                </div>
+            `;
+            
+            currentPhotoIndex = photos.length;
+            progressDiv.textContent = '🎉 PHOTO STRIP COMPLETE! 🎉';
+            photoBtn.textContent = 'PRINT AGAIN';
+            photoBtn.disabled = false;
+            updateStats('photosViewed');
         }
 
-        window.showScreen = function(screenId) {
-            document.querySelectorAll('.screen').forEach(screen => {
-                screen.classList.remove('active');
+        // Music functions
+        function initializeMusic() {
+            if (!audioPlayer) {
+                audioPlayer = new Audio();
+                audioPlayer.addEventListener('ended', nextSong);
+            }
+            updateNowPlaying();
+        }
+
+        function playSong(index) {
+            if (index < 0 || index >= 6) return;
+            currentSongIndex = index;
+            updateNowPlaying();
+            updateStats('songsPlayed');
+            
+            document.querySelectorAll('.song').forEach((song, i) => {
+                if (i === currentSongIndex) song.classList.add('playing');
+                else song.classList.remove('playing');
             });
-            
-            const targetScreen = document.getElementById(screenId + '-screen');
-            if (targetScreen) {
-                targetScreen.classList.add('active');
-                currentScreen = screenId;
-                
-                if (screenId === 'message') initializeMessage();
-                if (screenId === 'gallery') initializeGallery();
-                if (screenId === 'music') initializeMusic();
-                if (screenId === 'tetris' && tetrisGame && !tetrisGame.gameRunning) {
-                    startTetrisGame();
-                }
-            }
-        };
+        }
 
-        function setupEventListeners() {
-            document.getElementById('skip-btn')?.addEventListener('click', skipMessage);
-            document.getElementById('photo-btn')?.addEventListener('click', startPhotoShow);
-            document.addEventListener('keydown', handleKeyPress);
+        function playPause() {
+            isPlaying = !isPlaying;
+            document.getElementById('play-pause-btn').textContent = isPlaying ? '⏸' : '⏯';
+        }
+
+        function prevSong() {
+            let newIndex = currentSongIndex - 1;
+            if (newIndex < 0) newIndex = 5;
+            playSong(newIndex);
+        }
+
+        function nextSong() {
+            let newIndex = currentSongIndex + 1;
+            if (newIndex >= 6) newIndex = 0;
+            playSong(newIndex);
+        }
+
+        function updateNowPlaying() {
+            document.getElementById('now-playing').textContent = `🎜 Now Playing: ${songTitles[currentSongIndex]}`;
+        }
+
+        // Cake functions
+        function showCake() {
+            document.getElementById('cake-modal').classList.add('active');
         }
         
-        // Easter egg handlers
-        function handleKeyPress(e) {
-            const key = e.key;
-            
-            if (key === konamiCode[konamiIndex]) {
-                konamiIndex++;
-                if (konamiIndex === konamiCode.length) {
-                    activateEasterEgg();
-                    konamiIndex = 0;
-                }
-            } else {
-                konamiIndex = 0;
-            }
+        function closeCake() {
+            document.getElementById('cake-modal').classList.remove('active');
         }
         
-        function pressSelect() {
-            selectPressCount++;
-            
-            if (selectTimer) clearTimeout(selectTimer);
-            
-            selectTimer = setTimeout(() => {
-                if (selectPressCount >= 3) {
-                    activateEasterEgg();
-                }
-                selectPressCount = 0;
-            }, 1000);
+        function blowCandle() {
+            const candle = document.getElementById('birthday-candle');
+            const message = document.getElementById('cake-message');
+            candle.classList.add('blown');
+            message.textContent = '🎉 HAPPY BIRTHDAY, MANGO! 🎉';
+        }
+
+        // Modal functions
+        function closeGameOver() {
+            document.getElementById('game-over-modal').classList.remove('active');
+            showScreen('main');
         }
         
-        function pressA() { console.log('A button pressed'); }
-        function pressB() { console.log('B button pressed'); }
-        function navigateMenu(direction) { console.log('Navigating:', direction); }
-        
-        function activateEasterEgg() {
-            document.getElementById('secret-modal').classList.add('active');
-            selectPressCount = 0;
+        function closeFinal() {
+            document.getElementById('final-message-modal').classList.remove('active');
+            showScreen('main');
         }
         
         function closeSecret() {
             document.getElementById('secret-modal').classList.remove('active');
         }
-        
-        // Stats functions
-        function updateStats(statName) {
-            stats[statName]++;
-            saveStats();
-            displayStats();
-        }
-        
-        function saveStats() {
-            localStorage.setItem('gameboyStats', JSON.stringify(stats));
-        }
-        
-        function loadStats() {
-            const saved = localStorage.getItem('gameboyStats');
-            if (saved) {
-                stats = JSON.parse(saved);
-            }
-            displayStats();
-        }
-        
-        function displayStats() {
-            document.getElementById('stats-messages').textContent = stats.messagesRead || 0;
-            document.getElementById('stats-photos').textContent = stats.photosViewed || 0;
-            document.getElementById('stats-games').textContent = stats.gamesPlayed || 0;
-            document.getElementById('stats-songs').textContent = stats.songsPlayed || 0;
-            document.getElementById('stats-pacman').textContent = stats.pacmanScore || 0;
-        }
-                                    // Message functions
-function selectLetter(index) {
-    currentLetterIndex = index;
-    
-    document.querySelectorAll('.letter-btn').forEach((btn, i) => {
-        if (i === index) btn.classList.add('active');
-        else btn.classList.remove('active');
-    });
-    
-    if (typewriterInterval) clearInterval(typewriterInterval);
-    
-    const messageContent = document.getElementById('message-content');
-    messageContent.innerHTML = '';
-    
-    let charIndex = 0;
-    isTyping = true;
-    
-    typewriterInterval = setInterval(() => {
-        if (charIndex < letters[index].length) {
-            const char = letters[index][charIndex];
-            messageContent.innerHTML += char === '\n' ? '<br>' : char;
-            charIndex++;
-            messageContent.scrollTop = messageContent.scrollHeight;
-        } else {
-            clearInterval(typewriterInterval);
-            isTyping = false;
-            updateStats('messagesRead');
-        }
-    }, 50);
-}
 
-function initializeMessage() {
-    selectLetter(0);
-}
-
-function skipMessage() {
-    if (isTyping && typewriterInterval) {
-        clearInterval(typewriterInterval);
-        const messageContent = document.getElementById('message-content');
-        messageContent.innerHTML = letters[currentLetterIndex].replace(/\n/g, '<br>');
-        isTyping = false;
-        updateStats('messagesRead');
-    }
-}
-
-// Gallery functions
-function initializeGallery() {
-    const photoDisplay = document.getElementById('photo-display');
-    photoDisplay.innerHTML = '<div class="photo-placeholder">Press START PRINT to begin</div>';
-    document.getElementById('photobox-progress').textContent = '📸 READY TO PRINT';
-    document.getElementById('photo-btn').disabled = false;
-    document.getElementById('photo-btn').textContent = 'START PRINT';
-    currentPhotoIndex = 0;
-}
-
-function startPhotoShow() {
-    const photoBtn = document.getElementById('photo-btn');
-    const photoDisplay = document.getElementById('photo-display');
-    const progressDiv = document.getElementById('photobox-progress');
-    
-    photoBtn.disabled = true;
-    photoBtn.textContent = 'PRINTING...';
-    progressDiv.textContent = 'INITIALIZING CAMERA...';
-    
-    let framesHTML = '';
-    for (let i = 0; i < photos.length; i++) {
-        framesHTML += `
-            <div class="photo-frame" id="frame-${i+1}" onclick="enlargePhoto(${i})">
-                <div class="photo-content" style="color:#333;">READY</div>
-            </div>
-        `;
-    }
-    
-    photoDisplay.innerHTML = `
-        <div style="display:flex; flex-direction:column; width:100%;">
-            <div style="text-align:center; color:#9bbc0f; margin-bottom:5px; font-weight:bold;">PHOTOSTRIP SESSION</div>
-            <div style="max-height:250px; overflow-y:auto; padding:5px;">
-                ${framesHTML}
-            </div>
-            <div style="text-align:center; color:#9bbc0f; margin-top:5px; font-weight:bold;">🎂 HAPPY BIRTHDAY! 🎂</div>
-        </div>
-    `;
-    
-    currentPhotoIndex = 0;
-    
-    let countdown = 3;
-    progressDiv.textContent = `GET READY... ${countdown}`;
-    
-    const countdownInterval = setInterval(() => {
-        countdown--;
-        if (countdown > 0) {
-            progressDiv.textContent = `GET READY... ${countdown}`;
-        } else {
-            clearInterval(countdownInterval);
-            progressDiv.textContent = 'SMILE! 📸';
-            startPhotoCapture();
-        }
-    }, 1000);
-}
-
-function startPhotoCapture() {
-    const progressDiv = document.getElementById('photobox-progress');
-    
-    const captureInterval = setInterval(() => {
-        if (currentPhotoIndex < photos.length) {
-            const frame = document.getElementById(`frame-${currentPhotoIndex + 1}`);
-            
-            if (frame) {
-                progressDiv.textContent = '✨ FLASH! ✨';
-                
-                setTimeout(() => {
-                    frame.classList.add('filled');
-                    const photo = photos[currentPhotoIndex];
-                    
-                    const img = document.createElement('img');
-                    img.src = photo.image;
-                    img.alt = photo.text;
-                    img.className = 'photo-image';
-                    
-                    frame.innerHTML = '';
-                    frame.appendChild(img);
-                    
-                    const overlay = document.createElement('div');
-                    overlay.className = 'photo-overlay';
-                    overlay.textContent = photo.text;
-                    frame.appendChild(overlay);
-                    
-                    const displayCount = currentPhotoIndex + 1;
-                    progressDiv.textContent = `CAPTURED ${displayCount}/${photos.length}`;
-                    currentPhotoIndex++;
-                    updateStats('photosViewed');
-                }, 500);
-            } else {
-                currentPhotoIndex++;
-            }
-        } else {
-            clearInterval(captureInterval);
-            
-            setTimeout(() => {
-                progressDiv.textContent = '🎉 PHOTO STRIP COMPLETE! 🎉';
-                document.getElementById('photo-btn').textContent = 'PRINT AGAIN';
-                document.getElementById('photo-btn').disabled = false;
-            }, 2000);
-        }
-    }, 1500);
-}
-
-function enlargePhoto(index) {
-    alert(`Photo ${index + 1}: ${photos[index].text}`);
-                                    }
-                                    // Music functions
-function initializeMusic() {
-    if (!audioPlayer) {
-        audioPlayer = new Audio();
-        audioPlayer.addEventListener('ended', nextSong);
-        audioPlayer.addEventListener('error', function() {
-            document.getElementById('now-playing').textContent = '🎜 Error loading audio';
-        });
-    }
-    
-    updateNowPlaying();
-    document.querySelectorAll('.song').forEach((song, index) => {
-        if (index === currentSongIndex) {
-            song.classList.add('playing');
-        } else {
-            song.classList.remove('playing');
-        }
-    });
-}
-
-function playSong(index) {
-    if (index < 0 || index >= 6) return;
-    
-    currentSongIndex = index;
-    
-    if (audioPlayer) {
-        audioPlayer.src = audioFiles[currentSongIndex];
-        audioPlayer.load();
-        audioPlayer.play().catch(e => {
-            document.getElementById('now-playing').textContent = '🎜 Click play to start';
-        });
-        isPlaying = true;
-        document.getElementById('play-pause-btn').textContent = '⏸';
-        updateStats('songsPlayed');
-    }
-    
-    updateNowPlaying();
-    
-    document.querySelectorAll('.song').forEach((song, i) => {
-        if (i === currentSongIndex) {
-            song.classList.add('playing');
-        } else {
-            song.classList.remove('playing');
-        }
-    });
-}
-
-function playPause() {
-    if (!audioPlayer) return;
-    
-    if (isPlaying) {
-        audioPlayer.pause();
-        document.getElementById('play-pause-btn').textContent = '⏯';
-    } else {
-        if (!audioPlayer.src) {
-            playSong(currentSongIndex);
-        } else {
-            audioPlayer.play().catch(e => console.log('Playback failed:', e));
-        }
-        document.getElementById('play-pause-btn').textContent = '⏸';
-    }
-    isPlaying = !isPlaying;
-}
-
-function prevSong() {
-    let newIndex = currentSongIndex - 1;
-    if (newIndex < 0) newIndex = 5;
-    playSong(newIndex);
-}
-
-function nextSong() {
-    let newIndex = currentSongIndex + 1;
-    if (newIndex >= 6) newIndex = 0;
-    playSong(newIndex);
-}
-
-function updateNowPlaying() {
-    document.getElementById('now-playing').textContent = `🎜 Now Playing: ${songTitles[currentSongIndex]}`;
-}
-
-// Cake functions
-function showCake() {
-    document.getElementById('cake-modal').classList.add('active');
-}
-
-function closeCake() {
-    document.getElementById('cake-modal').classList.remove('active');
-}
-
-function blowCandle() {
-    const candle = document.getElementById('birthday-candle');
-    const flame = document.getElementById('flame');
-    const message = document.getElementById('cake-message');
-    
-    candle.classList.add('blown');
-    message.textContent = '🎉 HAPPY BIRTHDAY, MANGO! 🎉';
-    
-    setTimeout(() => {
-        activateEasterEgg();
-    }, 1000);
-}
-
-// Modal functions
-function closeGameOver() {
-    document.getElementById('game-over-modal').classList.remove('active');
-    showScreen('main');
-}
-
-function closeFinal() {
-    document.getElementById('final-message-modal').classList.remove('active');
-    showScreen('main');
-                                    }
-                                            // Tetris functions
+        // Tetris functions
         function initializeTetris() {
-            tetrisGame = {
-                board: Array(20).fill().map(() => Array(10).fill(0)),
-                currentPiece: null,
-                gameRunning: false
-            };
+            tetrisGame = { running: false };
         }
 
         function startTetrisGame() {
-            tetrisGame.gameRunning = true;
-            gameScore = 0;
-            gameLevel = 1;
-            gameLines = 0;
+            tetrisGame.running = true;
+            gameScore = Math.floor(Math.random() * 1000);
+            gameLines = Math.floor(Math.random() * 50);
+            gameLevel = Math.floor(gameLines / 10) + 1;
             updateTetrisStats();
             drawTetrisBoard();
             updateStats('gamesPlayed');
             
-            if (gameOverTimer) clearTimeout(gameOverTimer);
-            gameOverTimer = setTimeout(() => {
-                if (tetrisGame?.gameRunning) {
-                    gameOver();
-                }
-            }, 10000);
+            setTimeout(() => {
+                if (tetrisGame?.running) gameOver();
+            }, 5000);
         }
 
-        function moveTetrisPiece(direction) {
-            if (!tetrisGame?.gameRunning) return;
-            console.log('Moving piece:', direction);
+        function moveTetrisPiece(dir) {
+            if (!tetrisGame?.running) return;
+            gameScore += 10;
+            updateTetrisStats();
         }
 
         function rotateTetrisPiece() {
-            if (!tetrisGame?.gameRunning) return;
-            console.log('Rotating piece');
+            if (!tetrisGame?.running) return;
+            gameScore += 5;
+            updateTetrisStats();
         }
 
         function updateTetrisStats() {
@@ -1502,23 +1519,22 @@ function closeFinal() {
                 ctx.lineTo(canvas.width, i * 20);
                 ctx.stroke();
             }
+            
+            // Draw sample block
+            ctx.fillStyle = '#f00';
+            ctx.fillRect(60, 60, 30, 30);
+            ctx.fillStyle = '#0f0';
+            ctx.fillRect(90, 60, 30, 30);
+            ctx.fillStyle = '#00f';
+            ctx.fillRect(60, 90, 30, 30);
         }
 
         function gameOver() {
-            tetrisGame.gameRunning = false;
-            clearTimeout(gameOverTimer);
+            tetrisGame.running = false;
             document.getElementById('game-over-modal').classList.add('active');
         }
 
         // Pacman functions
-        function initializePacman() {
-            pacmanGame = {
-                score: 0,
-                level: 1,
-                running: false
-            };
-        }
-
         function startPacman() {
             pacmanGame.running = true;
             pacmanGame.score = 0;
@@ -1526,11 +1542,9 @@ function closeFinal() {
             document.getElementById('pacman-score').textContent = '0';
             document.getElementById('pacman-level').textContent = '1';
             updateStats('gamesPlayed');
-            
+            stats.pacmanScore += 10;
+            displayStats();
             drawPacmanBoard();
-            
-            if (pacmanInterval) clearInterval(pacmanInterval);
-            pacmanInterval = setInterval(updatePacman, 200);
         }
 
         function pausePacman() {
@@ -1539,12 +1553,8 @@ function closeFinal() {
 
         function movePacman(dir) {
             if (!pacmanGame?.running || pacmanPaused) return;
-            console.log('Pacman moving:', dir);
-        }
-
-        function updatePacman() {
-            if (!pacmanGame?.running || pacmanPaused) return;
-            drawPacmanBoard();
+            stats.pacmanScore += 5;
+            displayStats();
         }
 
         function drawPacmanBoard() {
@@ -1557,16 +1567,16 @@ function closeFinal() {
             
             // Draw maze
             ctx.fillStyle = '#00f';
-            ctx.fillRect(50, 50, 200, 10); // top wall
-            ctx.fillRect(50, 240, 200, 10); // bottom wall
-            ctx.fillRect(50, 50, 10, 200);  // left wall
-            ctx.fillRect(240, 50, 10, 200); // right wall
+            ctx.fillRect(50, 50, 200, 10);
+            ctx.fillRect(50, 240, 200, 10);
+            ctx.fillRect(50, 50, 10, 200);
+            ctx.fillRect(240, 50, 10, 200);
             
             // Draw dots
             ctx.fillStyle = '#fff';
             for (let y = 70; y < 230; y += 20) {
                 for (let x = 70; x < 230; x += 20) {
-                    if (x !== 150 && y !== 150) { // Skip center for Pacman
+                    if (x !== 150 || y !== 150) {
                         ctx.beginPath();
                         ctx.arc(x, y, 3, 0, Math.PI * 2);
                         ctx.fill();
