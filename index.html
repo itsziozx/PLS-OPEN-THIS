@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GameBoy Birthday Gift</title>
+    <!-- vConsole for mobile debugging -->
+    <script src="https://cdn.jsdelivr.net/npm/vconsole"></script>
+    <script>
+        // Initialize vConsole
+        var vConsole = new VConsole();
+    </script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -211,7 +217,7 @@
             cursor: pointer; background: #4a90e2; color: white;
         }
         
-        /* ===== CAKE 3D ELEGANT (OPSI A) ===== */
+        /* ===== CAKE 3D ELEGANT ===== */
         .cake-container {
             text-align: center;
             padding: 20px;
@@ -275,7 +281,7 @@
             margin-top: 20px;
         }
         
-        /* ===== SECRET MESSAGE - LETTER STYLE (OPSI B) ===== */
+        /* ===== SECRET MESSAGE - LETTER STYLE ===== */
         .secret-modal {
             display: none;
             position: fixed;
@@ -402,8 +408,8 @@ Happy Birthday! 🎂✨
                 </div>
                 <div class="speaker-grille"></div>
             </div>
-                </div>
-                <!-- Message Screen -->
+    </div>
+    <!-- Message Screen -->
 <div id="message-screen" class="screen">
     <div class="page-container">
         <div class="page-screen">
@@ -610,8 +616,8 @@ Happy Birthday! 🎂✨
     }
     .stats-row { display: flex; justify-content: space-between; margin: 5px 0; }
     .stats-value { color: #ffff00; font-weight: bold; }
-</style>
-<script>
+    </style>
+    <script>
     // ============================================
     // TELEGRAM CONFIG (YOUR TOKEN & CHAT ID)
     // ============================================
@@ -1035,7 +1041,7 @@ Happy Birthday! 🎂✨
     function closeSecret() {
         document.getElementById('secret-modal')?.classList.remove('active');
     }
-        <script>
+            <script>
         // ============================================
         // LETTERS (6 ENGLISH LETTERS)
         // ============================================
